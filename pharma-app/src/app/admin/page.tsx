@@ -1,12 +1,7 @@
-import { products } from "@/lib/products";
-import Link from "next/link";
+"use client";
 
-const stats = [
-  { label: "Total Revenue", value: "$48,250", icon: "💰", change: "+12%" },
-  { label: "Total Orders", value: "1,284", icon: "🛒", change: "+8%" },
-  { label: "Total Products", value: String(products.length), icon: "📦", change: "0%" },
-  { label: "Total Users", value: "892", icon: "👥", change: "+15%" },
-];
+import Link from "next/link";
+import { useAdminStore } from "@/lib/adminStore";
 
 const recentOrders = [
   { id: "#1001", customer: "John Doe", product: "Testosterone Enanthate 250", amount: "$55", status: "Shipped" },
@@ -17,6 +12,15 @@ const recentOrders = [
 ];
 
 export default function AdminDashboard() {
+  const { products, categories } = useAdminStore();
+
+  const stats = [
+    { label: "Total Revenue", value: "$48,250", icon: "💰", change: "+12%" },
+    { label: "Total Orders", value: "1,284", icon: "🛒", change: "+8%" },
+    { label: "Total Products", value: String(products.length), icon: "📦", change: "0%" },
+    { label: "Total Users", value: "892", icon: "👥", change: "+15%" },
+  ];
+
   return (
     <div>
       <h1 className="text-2xl font-black text-white mb-8">Admin <span className="text-red-600">Dashboard</span></h1>
@@ -32,11 +36,16 @@ export default function AdminDashboard() {
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Link href="/admin/products" className="bg-red-900/30 border border-red-800 hover:border-red-600 rounded-xl p-4 transition-colors group">
           <div className="text-xl mb-1">📦</div>
           <div className="text-white font-semibold text-sm">Manage Products</div>
           <div className="text-gray-400 text-xs">{products.length} products</div>
+        </Link>
+        <Link href="/admin/categories" className="bg-yellow-900/30 border border-yellow-800 hover:border-yellow-600 rounded-xl p-4 transition-colors group">
+          <div className="text-xl mb-1">🗂️</div>
+          <div className="text-white font-semibold text-sm">Manage Categories</div>
+          <div className="text-gray-400 text-xs">{categories.length} categories</div>
         </Link>
         <Link href="/admin/orders" className="bg-blue-900/30 border border-blue-800 hover:border-blue-600 rounded-xl p-4 transition-colors group">
           <div className="text-xl mb-1">🛒</div>

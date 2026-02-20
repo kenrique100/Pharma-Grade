@@ -7,10 +7,10 @@ interface CategoryCardProps {
 
 export default function CategoryCard({ category }: CategoryCardProps) {
   return (
-    <Link href={`/categories/${category.slug}`} className="group bg-gray-800 hover:bg-gray-750 border border-gray-700 hover:border-red-600 rounded-xl p-6 transition-all duration-300 hover:shadow-lg hover:shadow-red-900/20 text-center">
+    <Link href={`/categories/${category.slug}`} className="group bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-600 rounded-xl p-6 transition-all duration-300 hover:shadow-md text-center">
       <div className="text-4xl mb-3">{category.icon}</div>
-      <h3 className="text-white font-bold text-lg mb-1 group-hover:text-red-400 transition-colors">{category.name}</h3>
-      <p className="text-gray-400 text-sm">{category.description}</p>
+      <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-1 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">{category.name}</h3>
+      <p className="text-gray-500 dark:text-gray-400 text-sm">{category.description}</p>
     </Link>
   );
 }

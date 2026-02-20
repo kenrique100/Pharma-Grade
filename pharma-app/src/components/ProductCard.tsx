@@ -1,16 +1,33 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useCart } from "@/lib/cart";
 import { Product } from "@/types";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 interface ProductCardProps {
   product: Product;
 }
 
+const categoryEmoji: Record<string, string> = {
+  "Strength": "💪",
+  "Short Cycle": "⚡",
+  "Sex": "❤️",
+  "Post Cycle Therapy": "🛡️",
+  "Insulin": "💉",
+  "Injectable Steroids": "🔬",
+  "HGH": "🧬",
+  "Fat Loss": "🔥",
+  "Bulking Steroids": "🏋️",
+  "Bac Water": "💧",
+  "Botox": "✨",
+};
+
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCart((state) => state.addItem);
+  const [imgError, setImgError] = useState(false);
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -23,23 +40,36 @@ export default function ProductCard({ product }: ProductCardProps) {
     toast.success(`${product.name} added to cart!`);
   };
 
+  const emoji = categoryEmoji[product.category] ?? "💊";
+
   return (
     <Link href={`/products/${product.slug}`} className="group">
       <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-600 transition-all duration-300 hover:shadow-lg hover:shadow-red-100 dark:hover:shadow-red-900/20">
         <div className="relative h-48 bg-gray-50 dark:bg-gray-900 overflow-hidden">
-          <div className="w-full h-full flex items-center justify-center text-6xl bg-gradient-to-br from-gray-100 dark:from-gray-800 to-gray-200 dark:to-gray-900">
-            {product.category === "Orals" ? "💊" :
-             product.category === "Injectables" ? "💉" :
-             product.category === "Peptides" ? "🧬" :
-             product.category === "PCT" ? "🛡️" :
-             product.category === "Fat Loss" ? "🔥" : "❤️"}
-          </div>
+          {!imgError ? (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover"
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-6xl bg-gradient-to-br from-gray-100 dark:from-gray-800 to-gray-200 dark:to-gray-900">
+              {emoji}
+            </div>
+          )}
           {product.badge && (
             <span className={`absolute top-2 left-2 text-white text-xs font-bold px-2 py-1 rounded ${
               product.badge === "Best Seller" ? "bg-red-600" :
               product.badge === "New" ? "bg-green-600" : "bg-orange-600"
             }`}>
               {product.badge}
+            </span>
+          )}
+          {product.originalPrice && (
+            <span className="absolute top-2 right-2 bg-yellow-500 text-white text-xs font-bold px-2 py-1 rounded">
+              -{Math.round((1 - product.price / product.originalPrice) * 100)}%
             </span>
           )}
         </div>

@@ -4,13 +4,29 @@ import { useParams } from "next/navigation";
 import { getProductBySlug } from "@/lib/products";
 import { useCart } from "@/lib/cart";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
+
+const categoryEmoji: Record<string, string> = {
+  "Strength": "💪",
+  "Short Cycle": "⚡",
+  "Sex": "❤️",
+  "Post Cycle Therapy": "🛡️",
+  "Insulin": "💉",
+  "Injectable Steroids": "🔬",
+  "HGH": "🧬",
+  "Fat Loss": "🔥",
+  "Bulking Steroids": "🏋️",
+  "Bac Water": "💧",
+  "Botox": "✨",
+};
 
 export default function ProductPage() {
   const params = useParams();
   const product = getProductBySlug(params.slug as string);
   const addItem = useCart((state) => state.addItem);
   const [added, setAdded] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   if (!product) {
     return (
@@ -27,18 +43,28 @@ export default function ProductPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
+  const emoji = categoryEmoji[product.category] ?? "💊";
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-6">
         <Link href="/products" className="text-gray-400 hover:text-white text-sm">← Back to Products</Link>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <div className="bg-gray-800 rounded-2xl flex items-center justify-center h-96 text-8xl border border-gray-700">
-          {product.category === "Orals" ? "💊" :
-           product.category === "Injectables" ? "💉" :
-           product.category === "Peptides" ? "🧬" :
-           product.category === "PCT" ? "🛡️" :
-           product.category === "Fat Loss" ? "🔥" : "❤️"}
+        <div className="relative bg-gray-800 rounded-2xl overflow-hidden h-96 border border-gray-700">
+          {!imgError ? (
+            <Image
+              src={product.image}
+              alt={product.name}
+              fill
+              className="object-cover"
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-8xl">
+              {emoji}
+            </div>
+          )}
         </div>
         <div>
           {product.badge && (

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6cba7e50-c6f8-4ea5-895d-87ba1219e2aa" name="Changes" comment="update config">
+    <list default="true" id="6cba7e50-c6f8-4ea5-895d-87ba1219e2aa" name="Changes" comment="updated files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pharma-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pharma-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pharma-app/public/images/logo.webp" beforeDir="false" afterPath="$PROJECT_DIR$/pharma-app/public/images/logo.webp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +70,7 @@
       <updated>1770880480282</updated>
       <workItem from="1770880481718" duration="146000" />
       <workItem from="1771621495715" duration="451000" />
-      <workItem from="1771622081326" duration="6433000" />
+      <workItem from="1771622081326" duration="7494000" />
     </task>
     <task id="LOCAL-00001" summary="update config">
       <option name="closed" value="true" />
@@ -89,7 +88,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771625904543</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="updated files">
+      <option name="closed" value="true" />
+      <created>1771630664860</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1771630664860</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -97,6 +104,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="update config" />
-    <option name="LAST_COMMIT_MESSAGE" value="update config" />
+    <MESSAGE value="updated files" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated files" />
   </component>
 </project>

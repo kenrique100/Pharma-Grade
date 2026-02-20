@@ -28,9 +28,9 @@ export default function Header() {
 
           <nav className="hidden md:flex items-center space-x-6">
             <Link href="/products" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Products</Link>
-            <Link href="/categories/orals" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Orals</Link>
-            <Link href="/categories/injectables" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Injectables</Link>
-            <Link href="/categories/peptides" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Peptides</Link>
+            <Link href="/categories/injectable-steroids" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Injectables</Link>
+            <Link href="/categories/bulking-steroids" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Bulking</Link>
+            <Link href="/categories/fat-loss" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Fat Loss</Link>
             <Link href="/about" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">About</Link>
             <Link href="/testimonials" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Reviews</Link>
             <Link href="/support" className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors text-sm font-medium">Support</Link>
@@ -99,10 +99,10 @@ export default function Header() {
         {menuOpen && (
           <div className="md:hidden border-t border-gray-200 dark:border-gray-800 py-4 space-y-1">
             <Link href="/products" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>All Products</Link>
-            <Link href="/categories/orals" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Orals</Link>
-            <Link href="/categories/injectables" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Injectables</Link>
-            <Link href="/categories/peptides" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Peptides</Link>
-            <Link href="/categories/pct" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>PCT</Link>
+            <Link href="/categories/injectable-steroids" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Injectable Steroids</Link>
+            <Link href="/categories/bulking-steroids" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Bulking Steroids</Link>
+            <Link href="/categories/fat-loss" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Fat Loss</Link>
+            <Link href="/categories/post-cycle-therapy" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Post Cycle Therapy</Link>
             <Link href="/about" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>About</Link>
             <Link href="/testimonials" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Reviews</Link>
             <Link href="/support" className="block px-2 py-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white" onClick={() => setMenuOpen(false)}>Support</Link>

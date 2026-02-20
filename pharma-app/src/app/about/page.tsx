@@ -1,13 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const team = [
-  { name: "Dr. Marcus Reid", role: "Chief Pharmacologist", bio: "15+ years in pharmaceutical research and quality assurance.", emoji: "👨‍⚕️" },
-  { name: "Sarah Chen", role: "Head of Operations", bio: "Ensuring every order is fulfilled safely and discreetly.", emoji: "👩‍💼" },
-  { name: "Jake Torres", role: "Quality Control Lead", bio: "Responsible for our rigorous lab testing protocols.", emoji: "🔬" },
-  { name: "Aisha Okonkwo", role: "Customer Success Manager", bio: "Making sure every customer has an exceptional experience.", emoji: "🌟" },
-];
-
 const values = [
   { icon: "🔬", title: "Lab-Tested Purity", desc: "Every product undergoes third-party testing to guarantee 99%+ purity. We publish certificates of analysis for all products." },
   { icon: "🔐", title: "Privacy First", desc: "We accept only cryptocurrency payments and ship in unmarked, discreet packaging. Your privacy is our priority." },
@@ -77,24 +70,6 @@ export default function AboutPage() {
                 <div className="text-3xl mb-3">{val.icon}</div>
                 <h3 className="text-gray-900 dark:text-white font-bold text-lg mb-2">{val.title}</h3>
                 <p className="text-gray-500 dark:text-gray-400 text-sm">{val.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-16 px-4">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2 text-center">Meet the <span className="text-red-600">Team</span></h2>
-          <p className="text-gray-500 dark:text-gray-400 text-center mb-10">The experts behind Pharma Grade</p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member) => (
-              <div key={member.name} className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm text-center">
-                <div className="text-5xl mb-3">{member.emoji}</div>
-                <h3 className="text-gray-900 dark:text-white font-bold mb-1">{member.name}</h3>
-                <p className="text-red-600 dark:text-red-400 text-sm font-medium mb-2">{member.role}</p>
-                <p className="text-gray-500 dark:text-gray-400 text-xs">{member.bio}</p>
               </div>
             ))}
           </div>

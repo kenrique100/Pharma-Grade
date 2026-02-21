@@ -1,27 +1,16 @@
-// Pharma Grade — Prisma Schema
-// Recommended database: PostgreSQL (Neon, Supabase, or Railway — all free tier available)
-// Docs: https://www.prisma.io/docs
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  // Uncomment directUrl when using a connection pooler (e.g. PgBouncer / Supabase pooler)
-  // directUrl = env("DIRECT_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
-
-// ──────────────────────────────────────────────
-// Auth — Users
-// ──────────────────────────────────────────────
 
 model User {
   id        String   @id @default(cuid())
   name      String
   email     String   @unique
-  /// bcrypt-hashed password. Null for OAuth-only accounts.
   password  String?
   role      String   @default("user") // "admin" | "user"
   createdAt DateTime @default(now())
@@ -30,17 +19,12 @@ model User {
   @@index([email])
 }
 
-// ──────────────────────────────────────────────
-// Live Chat Messages
-// ──────────────────────────────────────────────
-
 model ChatMessage {
   id        String   @id @default(cuid())
   sessionId String
   userEmail String
   userName  String
   text      String
-  /// "user" | "admin"
   from      String
   timestamp DateTime @default(now())
 

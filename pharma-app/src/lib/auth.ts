@@ -1,12 +1,4 @@
-/**
- * Server-side better-auth configuration.
- *
- * ⚠️  Import this file only in:
- *   • src/app/api/auth/[...all]/route.ts
- *   • Server components / layouts (e.g. admin/layout.tsx)
- *
- * The middleware (Edge Runtime) uses better-auth's getSession via headers.
- */
+
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";

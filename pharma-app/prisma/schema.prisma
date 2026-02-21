@@ -6,8 +6,6 @@ datasource db {
   provider = "postgresql"
 }
 
-// ── better-auth required models ───────────────────────────────────────────────
-
 model User {
   id            String    @id
   name          String
@@ -15,7 +13,7 @@ model User {
   emailVerified Boolean
   image         String?
   password      String?
-  role          String    @default("user") // "user" | "admin" | "superadmin"
+  role          String    @default("user")
   gender        String?
   banned        Boolean?
   banReason     String?
@@ -74,8 +72,6 @@ model Verification {
 
   @@index([identifier])
 }
-
-// ── Application models ────────────────────────────────────────────────────────
 
 model ChatMessage {
   id        String   @id @default(cuid())

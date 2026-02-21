@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6cba7e50-c6f8-4ea5-895d-87ba1219e2aa" name="Changes" comment="updated files">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pharma-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pharma-app/package-lock.json" afterDir="false" />
-    </list>
+    <list default="true" id="6cba7e50-c6f8-4ea5-895d-87ba1219e2aa" name="Changes" comment="updated files" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -70,7 +67,7 @@
       <updated>1770880480282</updated>
       <workItem from="1770880481718" duration="146000" />
       <workItem from="1771621495715" duration="451000" />
-      <workItem from="1771622081326" duration="7494000" />
+      <workItem from="1771622081326" duration="7874000" />
     </task>
     <task id="LOCAL-00001" summary="update config">
       <option name="closed" value="true" />
@@ -96,7 +93,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771630664860</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="updated files">
+      <option name="closed" value="true" />
+      <created>1771631746658</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1771631746658</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

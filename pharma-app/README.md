@@ -1,6 +1,6 @@
 # 🏥 Pharma Grade — Production Setup Guide
 
-A Next.js 14 pharmaceutical e-commerce app with PostgreSQL (Prisma), NextAuth v5, live chat, and Resend email.
+A Next.js 14 pharmaceutical e-commerce app with PostgreSQL (Prisma), better-auth, live chat, and Resend email.
 
 ---
 
@@ -89,27 +89,28 @@ Open `.env.local` and fill in **all** values:
 ```dotenv
 # ── Required ────────────────────────────────────────────────────────
 DATABASE_URL=postgresql://USER:PASSWORD@HOST/pharmagrade?sslmode=require
-AUTH_SECRET=replace-with-a-random-32-char-secret
-NEXTAUTH_URL=http://localhost:3000        # change to your domain in production
+BETTER_AUTH_SECRET=replace-with-a-random-32-char-secret
+BETTER_AUTH_URL=http://localhost:3000        # change to your domain in production
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 
 # ── Optional: Google OAuth ─────────────────────────────────────────
-GOOGLE_CLIENT_ID=
-GOOGLE_CLIENT_SECRET=
+# GOOGLE_CLIENT_ID=
+# GOOGLE_CLIENT_SECRET=
 
 # ── Optional: Resend (live-chat email notifications) ──────────────
-RESEND_API_KEY=re_...
-ADMIN_EMAIL=admin@yourdomain.com
-FROM_EMAIL=support@yourdomain.com
+# RESEND_API_KEY=re_...
+# ADMIN_EMAIL=admin@yourdomain.com
+# FROM_EMAIL=support@yourdomain.com
 
 # ── Optional: Override seed-script passwords ───────────────────────
-ADMIN_PASSWORD=change-me-in-production
+# ADMIN_PASSWORD=change-me-in-production
+# USER_PASSWORD=change-me-in-production
 ```
 
-Generate `AUTH_SECRET`:
+Generate `BETTER_AUTH_SECRET`:
 ```bash
-npx auth secret
-# or
 openssl rand -base64 32
+# or visit https://generate-secret.vercel.app/32
 ```
 
 ---
@@ -181,21 +182,29 @@ Open [http://localhost:3000](http://localhost:3000).
    | Key | Value |
    |-----|-------|
    | `DATABASE_URL` | Your Neon / Supabase connection string |
-   | `AUTH_SECRET` | Random 32-char secret |
-   | `NEXTAUTH_URL` | `https://your-app.vercel.app` |
+   | `BETTER_AUTH_SECRET` | Random 32-char secret (`openssl rand -base64 32`) |
+   | `BETTER_AUTH_URL` | `https://your-app.vercel.app` |
+   | `NEXT_PUBLIC_BETTER_AUTH_URL` | `https://your-app.vercel.app` |
    | `RESEND_API_KEY` | Your Resend key (optional) |
-   | `ADMIN_EMAIL` | Admin email for chat notifications |
-   | `FROM_EMAIL` | Sender address (must be a verified Resend domain) |
+   | `ADMIN_EMAIL` | Admin email for chat notifications (optional) |
+   | `FROM_EMAIL` | Sender address — must be a verified Resend domain (optional) |
 
-5. Deploy → after deployment, run the seed **once** via Vercel CLI or a local connection:
+5. Deploy → after deployment, run the seed **once** via a local terminal pointed at the production DB:
 
 ```bash
-# Run from your local machine after setting DATABASE_URL to the production DB
-npm run db:migrate   # apply migrations
-npm run db:seed      # create admin user
+# 1. Apply all pending migrations to the production database
+npm run db:migrate
+
+# 2. Seed the admin and demo users (only needed once)
+npm run db:seed
+
+# 3. Start the production server (on a self-hosted machine)
+npm run build
+npm run start
 ```
 
-Or trigger from Vercel's Functions tab if you prefer.
+> On **Vercel** the build step runs automatically on every push.
+> Run `db:migrate` and `db:seed` locally with `DATABASE_URL` pointed at the production DB.
 
 ---
 
@@ -271,10 +280,11 @@ Middleware (Edge) → reads JWT from cookie via auth.config.ts
 
 | Problem | Solution |
 |---------|----------|
+| `SASL: client password must be a string` | `DATABASE_URL` is not set — copy `.env.example` to `.env.local` and fill in the value |
 | `PrismaClientInitializationError` | Check `DATABASE_URL` is set and the DB is reachable |
 | `Can't reach database server` | For Neon: enable **pooled connection** mode in the dashboard |
 | Build fails with `prisma generate` | Run `npm install` first, then `npm run db:generate` |
 | Admin login fails | Run `npm run db:seed` to create the admin user |
-| `AUTH_SECRET` error | Generate with `openssl rand -base64 32` and add to `.env.local` |
-| Edge runtime error (bcrypt) | Ensure `middleware.ts` imports from `auth.config.ts`, NOT `auth.ts` |
+| `BETTER_AUTH_SECRET` error | Generate with `openssl rand -base64 32` and add to `.env.local` |
+| Edge runtime error | Ensure `middleware.ts` does not import from `auth.ts` (Node.js only) |
 

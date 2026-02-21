@@ -6,6 +6,8 @@
  * or update the defaults below before running in production.
  */
 
+import path from "node:path";
+import { loadEnvConfig } from "@next/env";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "@prisma/client";
@@ -13,7 +15,18 @@ import { PrismaClient } from "@prisma/client";
 // better-auth uses scrypt for password hashing — import it here for consistent hashes
 import { hashPassword } from "better-auth/crypto";
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
+// Load Next.js env files (.env, .env.local, etc.) so DATABASE_URL is available
+// when the seed script runs outside of the Next.js runtime (e.g. `tsx prisma/seed.ts`).
+loadEnvConfig(path.join(__dirname, ".."));
+
+if (!process.env.DATABASE_URL) {
+  console.error(
+    "❌ DATABASE_URL is not set. Copy .env.example to .env.local and fill in the value."
+  );
+  process.exit(1);
+}
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 

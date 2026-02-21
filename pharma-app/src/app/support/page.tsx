@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 
 const faqs = [
@@ -22,16 +23,67 @@ interface Ticket {
   reply?: string;
 }
 
+interface ChatMsg {
+  id: string;
+  from: "user" | "admin";
+  text: string;
+  timestamp: string;
+}
+
+const WELCOME_MSG: ChatMsg = {
+  id: "welcome",
+  from: "admin",
+  text: "👋 Hello! Welcome to Pharma Grade support. How can I help you today?",
+  timestamp: new Date(0).toISOString(),
+};
+
+function getOrCreateSessionId() {
+  if (typeof window === "undefined") return "";
+  let sid = localStorage.getItem("chat_session_id");
+  if (!sid) {
+    sid = `sess_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+    localStorage.setItem("chat_session_id", sid);
+  }
+  return sid;
+}
+
 export default function SupportPage() {
+  const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState<"faq" | "ticket" | "chat">("faq");
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
-  const [chatMessages, setChatMessages] = useState<{ from: "user" | "support"; text: string }[]>([
-    { from: "support", text: "👋 Hello! Welcome to Pharma Grade support. How can I help you today?" },
-  ]);
+  const [chatMessages, setChatMessages] = useState<ChatMsg[]>([]);
   const [chatInput, setChatInput] = useState("");
+  const [chatSending, setChatSending] = useState(false);
+  const [sessionId, setSessionId] = useState("");
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setSessionId(getOrCreateSessionId());
+  }, []);
+
+  // Poll for new messages every 5 seconds when on chat tab
+  useEffect(() => {
+    if (activeTab !== "chat" || !sessionId) return;
+    const fetchMessages = async () => {
+      try {
+        const res = await fetch(`/api/chat?sessionId=${sessionId}`);
+        if (res.ok) {
+          const data: ChatMsg[] = await res.json();
+          setChatMessages(data.length > 0 ? data : [WELCOME_MSG]);
+        }
+      } catch {/* ignore */}
+    };
+    fetchMessages();
+    const interval = setInterval(fetchMessages, 5000);
+    return () => clearInterval(interval);
+  }, [activeTab, sessionId]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chatMessages]);
 
   const handleTicket = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,22 +104,43 @@ export default function SupportPage() {
     toast.success("Support ticket submitted! Check your email for confirmation.");
   };
 
-  const sendChat = (e: React.FormEvent) => {
+  const sendChat = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!chatInput.trim()) return;
-    const userMsg = chatInput.trim();
-    setChatMessages((prev) => [...prev, { from: "user", text: userMsg }]);
+    if (!chatInput.trim() || !sessionId) return;
+    const text = chatInput.trim();
     setChatInput("");
-    setTimeout(() => {
-      const lc = userMsg.toLowerCase();
-      let reply = "I've noted your message and will connect you with a team member shortly. For urgent matters, please submit a support ticket.";
-      if (lc.includes("order") || lc.includes("track")) reply = "To track your order, please check the email you received at purchase. Your tracking number is included once the order ships.";
-      else if (lc.includes("pay") || lc.includes("crypto") || lc.includes("btc") || lc.includes("eth")) reply = "We accept BTC, ETH, USDC, and LTC. At checkout, send the exact amount to the provided wallet address and paste your transaction hash to confirm.";
-      else if (lc.includes("ship") || lc.includes("delivery")) reply = "Standard shipping takes 7-14 business days. Express (3-7 days) is available. All shipments are in discreet, unmarked packaging.";
-      else if (lc.includes("return") || lc.includes("refund")) reply = "We don't accept returns due to product nature, but if your order was damaged or incorrect, contact us within 48 hours of delivery.";
-      else if (lc.includes("lab") || lc.includes("test") || lc.includes("purity")) reply = "All products are third-party lab tested for purity and potency. Certificates of Analysis are available on request.";
-      setChatMessages((prev) => [...prev, { from: "support", text: reply }]);
-    }, 1000);
+    setChatSending(true);
+
+    const userEmail = (session?.user as any)?.email ?? "";
+    const userName = (session?.user as any)?.name ?? "Guest";
+
+    // Optimistically add to UI (keep welcome if it's the only message)
+    const tempMsg: ChatMsg = { id: `tmp_${Date.now()}`, from: "user", text, timestamp: new Date().toISOString() };
+    setChatMessages((prev) => {
+      const withoutWelcome = prev.filter((m) => m.id !== "welcome");
+      return [...withoutWelcome, tempMsg];
+    });
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ sessionId, text, userEmail, userName }),
+      });
+      if (!res.ok) throw new Error("Failed to send");
+      if (!userEmail) {
+        toast("💡 Tip: Sign in so our team can email you when we reply!", { icon: "ℹ️" });
+      }
+    } catch {
+      toast.error("Failed to send message. Please try again.");
+      setChatMessages((prev) => {
+        const withoutTemp = prev.filter((m) => m.id !== tempMsg.id);
+        return withoutTemp.length === 0 ? [WELCOME_MSG] : withoutTemp;
+      });
+      setChatInput(text);
+    } finally {
+      setChatSending(false);
+    }
   };
 
   const inputCls = "w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors";
@@ -192,20 +265,29 @@ export default function SupportPage() {
           <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden">
             <div className="bg-red-600 px-5 py-3 flex items-center gap-3">
               <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-white font-semibold text-sm">Pharma Grade Support — Online</span>
+              <span className="text-white font-semibold text-sm">Pharma Grade Support — Online 24/7</span>
             </div>
+            {!session && (
+              <div className="px-5 py-2 bg-yellow-50 dark:bg-yellow-900/20 border-b border-yellow-200 dark:border-yellow-800">
+                <p className="text-yellow-700 dark:text-yellow-400 text-xs">💡 <a href="/login" className="underline font-medium">Sign in</a> so our team can email you when they reply.</p>
+              </div>
+            )}
             <div className="h-96 overflow-y-auto p-5 space-y-4 bg-gray-50 dark:bg-gray-900">
-              {chatMessages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
+              {chatMessages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-xs md:max-w-sm rounded-2xl px-4 py-2.5 text-sm ${
                     msg.from === "user"
                       ? "bg-red-600 text-white rounded-br-none"
                       : "bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-bl-none shadow-sm"
                   }`}>
                     {msg.text}
+                    <div className={`text-xs mt-1 ${msg.from === "user" ? "text-red-200" : "text-gray-400"}`}>
+                      {new Date(msg.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                    </div>
                   </div>
                 </div>
               ))}
+              <div ref={messagesEndRef} />
             </div>
             <form onSubmit={sendChat} className="flex gap-3 p-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
               <input
@@ -214,8 +296,11 @@ export default function SupportPage() {
                 onChange={(e) => setChatInput(e.target.value)}
                 className="flex-1 bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-red-500"
                 placeholder="Type your message..."
+                disabled={chatSending}
               />
-              <button type="submit" className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm">Send</button>
+              <button type="submit" disabled={chatSending || !chatInput.trim()} className="bg-red-600 hover:bg-red-700 disabled:bg-red-400 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm">
+                {chatSending ? "..." : "Send"}
+              </button>
             </form>
           </div>
         )}

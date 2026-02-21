@@ -11,6 +11,7 @@ export interface Product {
   rating: number;
   reviews: number;
   badge?: "Best Seller" | "New" | "Sale";
+  licenceUrl?: string;
 }
 
 export interface CartItem {

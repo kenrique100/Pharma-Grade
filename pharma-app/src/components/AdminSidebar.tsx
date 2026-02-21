@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/categories", label: "Categories", icon: "🗂️" },
   { href: "/admin/orders", label: "Orders", icon: "🛒" },
   { href: "/admin/users", label: "Users", icon: "👥" },
+  { href: "/admin/chat", label: "Live Chat", icon: "💬" },
 ];
 
 export default function AdminSidebar() {

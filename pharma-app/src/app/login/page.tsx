@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -19,9 +19,9 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      const result = await signIn("credentials", { email, password, redirect: false });
+      const result = await signIn.email({ email, password, callbackURL: "/" });
       if (result?.error) {
-        setError("Invalid email or password");
+        setError(result.error.message ?? "Invalid email or password");
         setLoading(false);
       } else {
         toast.success("Login successful! Welcome back.");
@@ -34,9 +34,9 @@ export default function LoginPage() {
     }
   };
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     toast("Google sign-in requires OAuth configuration.", { icon: "ℹ️" });
-    signIn("google", { callbackUrl: "/" });
+    await signIn.social({ provider: "google", callbackURL: "/" });
   };
 
   return (

@@ -1,10 +1,13 @@
 import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 
 export default async function AccountPage() {
-  const session = await auth();
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/login");
+
+  const { user } = session;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -12,14 +15,14 @@ export default async function AccountPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-1 bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 text-center shadow-sm">
           <div className="w-20 h-20 bg-red-600 rounded-full flex items-center justify-center text-white text-3xl font-black mx-auto mb-4">
-            {session.user?.name?.[0] || "U"}
+            {user?.name?.[0] || "U"}
           </div>
-          <h2 className="text-gray-900 dark:text-white font-bold text-lg">{session.user?.name}</h2>
-          <p className="text-gray-500 dark:text-gray-400 text-sm">{session.user?.email}</p>
+          <h2 className="text-gray-900 dark:text-white font-bold text-lg">{user?.name}</h2>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">{user?.email}</p>
           <span className={`inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium ${
-            (session.user as any)?.role === "admin" ? "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-400" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
+            user?.role === "admin" ? "bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-400" : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400"
           }`}>
-            {(session.user as any)?.role === "admin" ? "Administrator" : "Member"}
+            {user?.role === "admin" ? "Administrator" : "Member"}
           </span>
         </div>
         <div className="md:col-span-2 grid grid-cols-2 gap-4">
@@ -37,7 +40,7 @@ export default async function AccountPage() {
           ))}
         </div>
       </div>
-      {(session.user as any)?.role === "admin" && (
+      {user?.role === "admin" && (
         <div className="mt-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4">
           <p className="text-red-700 dark:text-red-400 font-medium mb-2">Administrator Access</p>
           <Link href="/admin" className="text-sm text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300">Go to Admin Dashboard →</Link>

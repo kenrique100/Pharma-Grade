@@ -12,13 +12,6 @@ const users = [
     password: "$2b$10$2bhk5pvPw33W94YktS6jBuBTTi5.4JC/E8AAlJzmaSML9JYG7llGa", // admin123
     role: "admin",
   },
-  {
-    id: "2",
-    name: "Test User",
-    email: "user@pharmagrade.com",
-    password: "$2b$10$aKKJLWifABKYn8lNFE8GX.AGIpJmi2nVWAJRVWTmiUROY8MObyaM2", // user123
-    role: "user",
-  },
 ];
 
 const providers = [

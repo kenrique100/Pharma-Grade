@@ -1,12 +1,12 @@
 import path from "node:path";
 import { defineConfig } from "prisma/config";
+import { PrismaPg } from "@prisma/adapter-pg";
 
-// Prisma 7: prisma.config.ts can override the datasource URL for CLI commands
-// (migrate, push, reset). The schema.prisma still declares url = env("DATABASE_URL")
-// for Prisma Client and other tooling.
 export default defineConfig({
   schema: path.join(__dirname, "prisma/schema.prisma"),
-  datasource: {
-    url: process.env.DATABASE_URL,
+  migrate: {
+    async adapter(env) {
+      return new PrismaPg({ connectionString: env.DATABASE_URL });
+    },
   },
 });

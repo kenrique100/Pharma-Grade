@@ -31,7 +31,7 @@ export async function GET(req: NextRequest) {
 export async function POST(req: NextRequest) {
   const body = await req.json();
   const msg: ChatMessage = {
-    id: Date.now().toString(),
+    id: crypto.randomUUID(),
     sessionId: body.sessionId,
     userEmail: body.userEmail ?? "",
     userName: body.userName ?? "Guest",

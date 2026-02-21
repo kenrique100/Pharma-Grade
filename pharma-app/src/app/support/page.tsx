@@ -30,6 +30,13 @@ interface ChatMsg {
   timestamp: string;
 }
 
+const WELCOME_MSG: ChatMsg = {
+  id: "welcome",
+  from: "admin",
+  text: "👋 Hello! Welcome to Pharma Grade support. How can I help you today?",
+  timestamp: new Date(0).toISOString(),
+};
+
 function getOrCreateSessionId() {
   if (typeof window === "undefined") return "";
   let sid = localStorage.getItem("chat_session_id");
@@ -65,9 +72,7 @@ export default function SupportPage() {
         const res = await fetch(`/api/chat?sessionId=${sessionId}`);
         if (res.ok) {
           const data: ChatMsg[] = await res.json();
-          setChatMessages(data.length > 0 ? data : [
-            { id: "welcome", from: "admin", text: "👋 Hello! Welcome to Pharma Grade support. How can I help you today?", timestamp: new Date().toISOString() },
-          ]);
+          setChatMessages(data.length > 0 ? data : [WELCOME_MSG]);
         }
       } catch {/* ignore */}
     };
@@ -109,9 +114,12 @@ export default function SupportPage() {
     const userEmail = (session?.user as any)?.email ?? "";
     const userName = (session?.user as any)?.name ?? "Guest";
 
-    // Optimistically add to UI
+    // Optimistically add to UI (keep welcome if it's the only message)
     const tempMsg: ChatMsg = { id: `tmp_${Date.now()}`, from: "user", text, timestamp: new Date().toISOString() };
-    setChatMessages((prev) => [...prev.filter((m) => m.id !== "welcome"), tempMsg]);
+    setChatMessages((prev) => {
+      const withoutWelcome = prev.filter((m) => m.id !== "welcome");
+      return [...withoutWelcome, tempMsg];
+    });
 
     try {
       const res = await fetch("/api/chat", {
@@ -125,7 +133,10 @@ export default function SupportPage() {
       }
     } catch {
       toast.error("Failed to send message. Please try again.");
-      setChatMessages((prev) => prev.filter((m) => m.id !== tempMsg.id));
+      setChatMessages((prev) => {
+        const withoutTemp = prev.filter((m) => m.id !== tempMsg.id);
+        return withoutTemp.length === 0 ? [WELCOME_MSG] : withoutTemp;
+      });
       setChatInput(text);
     } finally {
       setChatSending(false);
@@ -262,8 +273,8 @@ export default function SupportPage() {
               </div>
             )}
             <div className="h-96 overflow-y-auto p-5 space-y-4 bg-gray-50 dark:bg-gray-900">
-              {chatMessages.map((msg, i) => (
-                <div key={i} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
+              {chatMessages.map((msg) => (
+                <div key={msg.id} className={`flex ${msg.from === "user" ? "justify-end" : "justify-start"}`}>
                   <div className={`max-w-xs md:max-w-sm rounded-2xl px-4 py-2.5 text-sm ${
                     msg.from === "user"
                       ? "bg-red-600 text-white rounded-br-none"

@@ -21,6 +21,12 @@ const categoryEmoji: Record<string, string> = {
   "Botox": "✨",
 };
 
+const IMAGE_URL_RE = /\.(jpg|jpeg|png|webp|gif)(\?|$)/i;
+
+function isImageLicence(url: string) {
+  return url.startsWith("data:image") || IMAGE_URL_RE.test(url);
+}
+
 export default function ProductPage() {
   const params = useParams();
   const { products } = useAdminStore();
@@ -49,7 +55,7 @@ export default function ProductPage() {
 
   const renderLicence = () => {
     if (!product.licenceUrl) return null;
-    if (product.licenceUrl.startsWith("data:image") || product.licenceUrl.match(/\.(jpg|jpeg|png|webp|gif)(\?|$)/i)) {
+    if (isImageLicence(product.licenceUrl)) {
       return (
         <div className="mt-4">
           <Image src={product.licenceUrl} alt="Product Licence" width={600} height={400} className="rounded-xl border border-gray-200 dark:border-gray-700 max-w-full object-contain" unoptimized />

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const sessionMsg = messages.find((m) => m.sessionId === sessionId && m.from === "user");
 
   const reply: ChatMessage = {
-    id: Date.now().toString(),
+    id: crypto.randomUUID(),
     sessionId,
     userEmail: sessionMsg?.userEmail ?? "",
     userName: "Support Team",

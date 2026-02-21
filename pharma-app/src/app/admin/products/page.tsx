@@ -9,6 +9,16 @@ const EMOJI_MAP: Record<string, string> = {
   Orals: "💊", Injectables: "💉", Peptides: "🧬", PCT: "🛡️", "Fat Loss": "🔥", "Sexual Health": "❤️",
 };
 
+function isBase64Content(url: string) {
+  return url.startsWith("data:");
+}
+
+function licenceLabel(url: string) {
+  if (url.startsWith("data:image")) return "🖼️ Image uploaded";
+  if (url.startsWith("data:")) return "📄 File uploaded";
+  return "🔗 URL set";
+}
+
 type FormState = {
   name: string; description: string; price: string; originalPrice: string;
   category: string; inStock: boolean; badge: string;
@@ -182,7 +192,7 @@ export default function AdminProductsPage() {
                   <div className="flex gap-2 items-center">
                     <input
                       type="text"
-                      value={form.licenceUrl.startsWith("data:") ? "" : form.licenceUrl}
+                      value={isBase64Content(form.licenceUrl) ? "" : form.licenceUrl}
                       onChange={(e) => setForm({ ...form, licenceUrl: e.target.value })}
                       className={inputCls}
                       placeholder="Paste licence URL, or upload a file below"
@@ -195,10 +205,7 @@ export default function AdminProductsPage() {
                   <input ref={licenceInputRef} type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" onChange={handleLicenceFile} />
                   {form.licenceUrl && (
                     <div className="mt-1 flex items-center gap-2">
-                      <span className="text-xs text-green-600 dark:text-green-400">
-                        {form.licenceUrl.startsWith("data:image") ? "🖼️ Image uploaded" :
-                         form.licenceUrl.startsWith("data:") ? "📄 File uploaded" : "🔗 URL set"}
-                      </span>
+                      <span className="text-xs text-green-600 dark:text-green-400">{licenceLabel(form.licenceUrl)}</span>
                       <button type="button" onClick={() => setForm({ ...form, licenceUrl: "" })} className="text-xs text-red-500 hover:text-red-700">Remove</button>
                     </div>
                   )}

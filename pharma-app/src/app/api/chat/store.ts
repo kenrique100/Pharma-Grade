@@ -1,5 +1,9 @@
-// Shared in-memory message store for the chat API routes
-// In production, replace with a real database (e.g., PostgreSQL, MongoDB)
+/**
+ * Shared TypeScript types for the Live Chat API routes.
+ *
+ * Messages are persisted in PostgreSQL via Prisma (see /api/chat/route.ts).
+ * This file no longer exports a mutable in-memory array.
+ */
 
 export interface ChatMessage {
   id: string;
@@ -10,6 +14,3 @@ export interface ChatMessage {
   from: "user" | "admin";
   timestamp: string;
 }
-
-// Module-level array acts as in-memory store (resets on server restart)
-export const messages: ChatMessage[] = [];

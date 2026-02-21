@@ -10,12 +10,12 @@ const orders = [
 export default function AdminOrdersPage() {
   return (
     <div>
-      <h1 className="text-2xl font-black text-white mb-8">Manage <span className="text-red-600">Orders</span></h1>
-      <div className="bg-gray-800 rounded-xl border border-gray-700 overflow-hidden">
+      <h1 className="text-2xl font-black text-gray-900 dark:text-white mb-8">Manage <span className="text-red-600">Orders</span></h1>
+      <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-gray-700 text-gray-400 text-sm">
+              <tr className="border-b border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 text-sm">
                 <th className="text-left p-4">Order ID</th>
                 <th className="text-left p-4">Customer</th>
                 <th className="text-left p-4">Products</th>
@@ -27,25 +27,25 @@ export default function AdminOrdersPage() {
             </thead>
             <tbody>
               {orders.map((order) => (
-                <tr key={order.id} className="border-b border-gray-700/50 text-sm">
-                  <td className="p-4 text-gray-400 font-mono">{order.id}</td>
+                <tr key={order.id} className="border-b border-gray-100 dark:border-gray-700/50 text-sm">
+                  <td className="p-4 text-gray-500 dark:text-gray-400 font-mono">{order.id}</td>
                   <td className="p-4">
-                    <div className="text-white">{order.customer}</div>
-                    <div className="text-gray-500 text-xs">{order.email}</div>
+                    <div className="text-gray-900 dark:text-white">{order.customer}</div>
+                    <div className="text-gray-400 dark:text-gray-500 text-xs">{order.email}</div>
                   </td>
-                  <td className="p-4 text-gray-300 text-xs">{order.products.join(", ")}</td>
-                  <td className="p-4 text-green-400 font-semibold">{order.total}</td>
+                  <td className="p-4 text-gray-600 dark:text-gray-300 text-xs">{order.products.join(", ")}</td>
+                  <td className="p-4 text-green-600 dark:text-green-400 font-semibold">{order.total}</td>
                   <td className="p-4">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      order.status === "Delivered" ? "bg-green-900 text-green-400" :
-                      order.status === "Shipped" ? "bg-blue-900 text-blue-400" : "bg-yellow-900 text-yellow-400"
+                      order.status === "Delivered" ? "bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-400" :
+                      order.status === "Shipped" ? "bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-400" : "bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-400"
                     }`}>{order.status}</span>
                   </td>
-                  <td className="p-4 text-gray-400">{order.date}</td>
+                  <td className="p-4 text-gray-500 dark:text-gray-400">{order.date}</td>
                   <td className="p-4">
                     <div className="flex gap-2">
-                      <button className="text-blue-400 hover:text-blue-300 text-xs font-medium">View</button>
-                      <button className="text-yellow-400 hover:text-yellow-300 text-xs font-medium">Update</button>
+                      <button className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-xs font-medium">View</button>
+                      <button className="text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 text-xs font-medium">Update</button>
                     </div>
                   </td>
                 </tr>

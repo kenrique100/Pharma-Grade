@@ -15,7 +15,17 @@ if (!process.env.DATABASE_URL) {
 
 export default defineConfig({
   schema: path.join(__dirname, "prisma/schema.prisma"),
+
+  migrations: {
+    path: "prisma/migrations",
+    // Used by `prisma migrate reset` and `prisma db seed`
+    seed: "tsx prisma/seed.ts",
+  },
+
   datasource: {
-    url: process.env.DATABASE_URL,
+    // Prefer DIRECT_URL (non-pooled) for migrations so that Prisma can use
+    // DDL transactions that are incompatible with PgBouncer in transaction mode.
+    // Falls back to DATABASE_URL if DIRECT_URL is not set.
+    url: process.env.DIRECT_URL ?? process.env.DATABASE_URL,
   },
 });

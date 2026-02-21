@@ -26,7 +26,10 @@ if (!process.env.DATABASE_URL) {
   process.exit(1);
 }
 
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+// Prefer DIRECT_URL (non-pooled) so that the seed script bypasses PgBouncer,
+// which can hide freshly-migrated tables when running in transaction mode.
+const connectionString = process.env.DIRECT_URL ?? process.env.DATABASE_URL!;
+const pool = new Pool({ connectionString });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 

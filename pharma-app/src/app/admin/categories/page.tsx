@@ -63,14 +63,15 @@ export default function AdminCategoriesPage() {
     setForm(emptyForm);
   };
 
-  const inputCls = "w-full bg-gray-700 border border-gray-600 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 text-sm";
+  const inputCls = "w-full bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 text-sm";
+  const labelCls = "block text-gray-700 dark:text-gray-300 text-xs font-medium mb-1";
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-black text-white">Manage <span className="text-red-600">Categories</span></h1>
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <h1 className="text-2xl font-black text-gray-900 dark:text-white">Manage <span className="text-red-600">Categories</span></h1>
         <div className="flex gap-3">
-          <Link href="/admin/products" className="bg-gray-700 hover:bg-gray-600 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm">← Products</Link>
+          <Link href="/admin/products" className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm">← Products</Link>
           <button onClick={openAdd} className="bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition-colors text-sm">+ Add Category</button>
         </div>
       </div>
@@ -78,34 +79,34 @@ export default function AdminCategoriesPage() {
       {/* Form Modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
-          <div className="bg-gray-800 rounded-2xl p-6 border border-gray-700 w-full max-w-md">
-            <h2 className="text-white font-bold text-lg mb-5">{editing ? "Edit Category" : "Add Category"}</h2>
+          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 w-full max-w-md shadow-xl">
+            <h2 className="text-gray-900 dark:text-white font-bold text-lg mb-5">{editing ? "Edit Category" : "Add Category"}</h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-gray-300 text-xs font-medium mb-1">Category Name *</label>
+                <label className={labelCls}>Category Name *</label>
                 <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className={inputCls} placeholder="e.g. SARMs" />
               </div>
               <div>
-                <label className="block text-gray-300 text-xs font-medium mb-1">Description *</label>
+                <label className={labelCls}>Description *</label>
                 <input type="text" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required className={inputCls} placeholder="Short description" />
               </div>
               <div>
-                <label className="block text-gray-300 text-xs font-medium mb-2">Icon</label>
+                <label className="block text-gray-700 dark:text-gray-300 text-xs font-medium mb-2">Icon</label>
                 <div className="flex flex-wrap gap-2">
                   {iconOptions.map((icon) => (
                     <button key={icon} type="button" onClick={() => setForm({ ...form, icon })}
-                      className={`text-2xl p-2 rounded-lg transition-colors ${form.icon === icon ? "bg-red-600" : "bg-gray-700 hover:bg-gray-600"}`}>
+                      className={`text-2xl p-2 rounded-lg transition-colors ${form.icon === icon ? "bg-red-600" : "bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"}`}>
                       {icon}
                     </button>
                   ))}
                 </div>
               </div>
               <div>
-                <label className="block text-gray-300 text-xs font-medium mb-2">Color</label>
+                <label className="block text-gray-700 dark:text-gray-300 text-xs font-medium mb-2">Color</label>
                 <div className="flex flex-wrap gap-2">
                   {colorOptions.map((opt) => (
                     <button key={opt.value} type="button" onClick={() => setForm({ ...form, color: opt.value })}
-                      className={`w-8 h-8 rounded-lg ${opt.value} ${form.color === opt.value ? "ring-2 ring-white ring-offset-2 ring-offset-gray-800" : ""}`}
+                      className={`w-8 h-8 rounded-lg ${opt.value} ${form.color === opt.value ? "ring-2 ring-gray-900 dark:ring-white ring-offset-2 ring-offset-white dark:ring-offset-gray-800" : ""}`}
                       title={opt.label}
                     />
                   ))}
@@ -113,7 +114,7 @@ export default function AdminCategoriesPage() {
               </div>
               <div className="flex gap-3 pt-2">
                 <button type="submit" className="flex-1 bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-lg text-sm">{editing ? "Update" : "Add Category"}</button>
-                <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-6 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2.5 rounded-lg text-sm">Cancel</button>
+                <button type="button" onClick={() => { setShowForm(false); setEditing(null); }} className="px-6 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-bold py-2.5 rounded-lg text-sm">Cancel</button>
               </div>
             </form>
           </div>
@@ -125,25 +126,25 @@ export default function AdminCategoriesPage() {
         {categories.map((cat) => {
           const count = productCountForCategory(cat.name);
           return (
-            <div key={cat.slug} className="bg-gray-800 rounded-xl border border-gray-700 p-5 hover:border-gray-600 transition-colors">
+            <div key={cat.slug} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 ${cat.color} rounded-lg flex items-center justify-center text-xl`}>
                     {cat.icon}
                   </div>
                   <div>
-                    <h3 className="text-white font-bold">{cat.name}</h3>
-                    <p className="text-gray-400 text-xs">{count} product{count !== 1 ? "s" : ""}</p>
+                    <h3 className="text-gray-900 dark:text-white font-bold">{cat.name}</h3>
+                    <p className="text-gray-500 dark:text-gray-400 text-xs">{count} product{count !== 1 ? "s" : ""}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
-                  <button onClick={() => openEdit(cat)} className="text-yellow-400 hover:text-yellow-300 text-xs font-medium">Edit</button>
-                  <button onClick={() => handleDelete(cat.slug, cat.name)} className="text-red-400 hover:text-red-300 text-xs font-medium">Delete</button>
+                  <button onClick={() => openEdit(cat)} className="text-yellow-600 dark:text-yellow-400 hover:text-yellow-700 dark:hover:text-yellow-300 text-xs font-medium">Edit</button>
+                  <button onClick={() => handleDelete(cat.slug, cat.name)} className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 text-xs font-medium">Delete</button>
                 </div>
               </div>
-              <p className="text-gray-400 text-sm">{cat.description}</p>
+              <p className="text-gray-500 dark:text-gray-400 text-sm">{cat.description}</p>
               <div className="mt-3 flex items-center gap-2">
-                <Link href={`/categories/${cat.slug}`} className="text-blue-400 hover:text-blue-300 text-xs font-medium">View Page →</Link>
+                <Link href={`/categories/${cat.slug}`} className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-xs font-medium">View Page →</Link>
               </div>
             </div>
           );

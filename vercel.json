@@ -1,0 +1,7 @@
+{
+  "buildCommand": "cd pharma-app && npm install && npm run build",
+  "outputDirectory": "pharma-app/.next",
+  "installCommand": "cd pharma-app && npm install",
+  "framework": "nextjs",
+  "devCommand": "cd pharma-app && npm run dev"
+}

@@ -78,7 +78,8 @@ pharma-app/
 ```bash
 cd pharma-app
 cp .env.example .env.local
-# Edit .env.local with your AUTH_SECRET
+# Edit .env.local — set AUTH_SECRET (generate at https://generate-secret.vercel.app/32)
+# and set NEXTAUTH_URL to http://localhost:3000 for local dev
 ```
 
 ## 🔮 Future Recommendations
@@ -141,18 +142,36 @@ npm install twilio
 ## 🚢 Deployment
 
 ### Vercel (Recommended)
-```bash
-npm install -g vercel
-cd pharma-app
-vercel --prod
-```
 
-Set these environment variables in Vercel dashboard:
-- `AUTH_SECRET` — Random 32-char string (`openssl rand -base64 32`)
-- `NEXTAUTH_URL` — Your production domain
+The Next.js app lives in the `pharma-app/` subdirectory. The `vercel.json` at the repo root already handles this automatically — just connect the repository to Vercel and it will build correctly.
+
+**Required environment variables** (Vercel Dashboard → Settings → Environment Variables):
+
+| Variable | Value |
+|---|---|
+| `AUTH_SECRET` | A random 32-byte secret. Generate one at [generate-secret.vercel.app/32](https://generate-secret.vercel.app/32) or run `openssl rand -base64 32` |
+| `NEXTAUTH_URL` | Your production URL, e.g. `https://your-app.vercel.app` |
+
+**Step-by-step:**
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) → **New Project** → import this repo
+3. In **Settings → Environment Variables**, add `AUTH_SECRET` and `NEXTAUTH_URL`
+4. Click **Deploy**
+
+> **Getting `AUTH_SECRET`**: Visit [https://generate-secret.vercel.app/32](https://generate-secret.vercel.app/32) to generate a secure random secret, or run `openssl rand -base64 32` in your terminal.
+
+### Local Production Build
+```bash
+cd pharma-app
+cp .env.example .env.local
+# Fill in AUTH_SECRET and NEXTAUTH_URL in .env.local
+npm install
+npm run build
+npm start
+```
 
 ### Docker
 ```bash
 docker build -t pharma-grade .
-docker run -p 3000:3000 --env-file .env.local pharma-grade
+docker run -p 3000:3000 --env-file pharma-app/.env.local pharma-grade
 ```

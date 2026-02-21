@@ -1,7 +1,7 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import { getProductBySlug } from "@/lib/products";
+import { useAdminStore } from "@/lib/adminStore";
 import { useCart } from "@/lib/cart";
 import Link from "next/link";
 import Image from "next/image";
@@ -23,10 +23,12 @@ const categoryEmoji: Record<string, string> = {
 
 export default function ProductPage() {
   const params = useParams();
-  const product = getProductBySlug(params.slug as string);
+  const { products } = useAdminStore();
+  const product = products.find((p) => p.slug === (params.slug as string));
   const addItem = useCart((state) => state.addItem);
   const [added, setAdded] = useState(false);
   const [imgError, setImgError] = useState(false);
+  const [showLicence, setShowLicence] = useState(false);
 
   if (!product) {
     return (
@@ -44,6 +46,25 @@ export default function ProductPage() {
   };
 
   const emoji = categoryEmoji[product.category] ?? "💊";
+
+  const renderLicence = () => {
+    if (!product.licenceUrl) return null;
+    if (product.licenceUrl.startsWith("data:image") || product.licenceUrl.match(/\.(jpg|jpeg|png|webp|gif)(\?|$)/i)) {
+      return (
+        <div className="mt-4">
+          <Image src={product.licenceUrl} alt="Product Licence" width={600} height={400} className="rounded-xl border border-gray-200 dark:border-gray-700 max-w-full object-contain" unoptimized />
+        </div>
+      );
+    }
+    return (
+      <div className="mt-4">
+        <a href={product.licenceUrl} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+          📄 View / Download Licence
+        </a>
+      </div>
+    );
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -105,6 +126,20 @@ export default function ProductPage() {
           <Link href="/cart" className="block w-full text-center py-4 rounded-xl font-bold text-lg border border-gray-300 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-400 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors mt-3">
             View Cart
           </Link>
+
+          {/* Product Licence Section */}
+          {product.licenceUrl && (
+            <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+              <button
+                onClick={() => setShowLicence(!showLicence)}
+                className="w-full flex items-center justify-between text-left"
+              >
+                <span className="text-gray-900 dark:text-white font-semibold text-sm">📋 Product Licence / Certificate</span>
+                <span className="text-gray-400 text-xs">{showLicence ? "▲ Hide" : "▼ View"}</span>
+              </button>
+              {showLicence && renderLicence()}
+            </div>
+          )}
         </div>
       </div>
     </div>

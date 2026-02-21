@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useAdminStore, AdminProduct, PromotionType } from "@/lib/adminStore";
 import toast from "react-hot-toast";
@@ -13,11 +13,13 @@ type FormState = {
   name: string; description: string; price: string; originalPrice: string;
   category: string; inStock: boolean; badge: string;
   promotionType: PromotionType; promotionValue: string; image: string;
+  licenceUrl: string;
 };
 
 const emptyForm: FormState = {
   name: "", description: "", price: "", originalPrice: "", category: "Orals",
   inStock: true, badge: "", promotionType: "none", promotionValue: "", image: "",
+  licenceUrl: "",
 };
 
 export default function AdminProductsPage() {
@@ -26,6 +28,7 @@ export default function AdminProductsPage() {
   const [editing, setEditing] = useState<string | null>(null);
   const [form, setForm] = useState<FormState>(emptyForm);
   const [search, setSearch] = useState("");
+  const licenceInputRef = useRef<HTMLInputElement>(null);
 
   const filtered = products.filter(
     (p) => p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase())
@@ -41,6 +44,7 @@ export default function AdminProductsPage() {
       inStock: p.inStock, badge: p.badge || "",
       promotionType: p.promotionType || "none",
       promotionValue: String(p.promotionValue || ""), image: p.image,
+      licenceUrl: p.licenceUrl || "",
     });
     setShowForm(true);
   };
@@ -64,6 +68,7 @@ export default function AdminProductsPage() {
       promotionType: form.promotionType,
       promotionValue: form.promotionValue ? parseFloat(form.promotionValue) : 0,
       image: form.image || `/images/products/placeholder.webp`,
+      licenceUrl: form.licenceUrl || undefined,
       rating: 4.5,
       reviews: 0,
     };
@@ -77,6 +82,16 @@ export default function AdminProductsPage() {
     setShowForm(false);
     setForm(emptyForm);
     setEditing(null);
+  };
+
+  const handleLicenceFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setForm((prev) => ({ ...prev, licenceUrl: reader.result as string }));
+    };
+    reader.readAsDataURL(file);
   };
 
   useEffect(() => {
@@ -161,6 +176,33 @@ export default function AdminProductsPage() {
                 <div className="col-span-1 sm:col-span-2">
                   <label className={labelCls}>Description *</label>
                   <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} required rows={3} className={inputCls} placeholder="Detailed product description..." />
+                </div>
+                <div className="col-span-1 sm:col-span-2">
+                  <label className={labelCls}>Product Licence (optional)</label>
+                  <div className="flex gap-2 items-center">
+                    <input
+                      type="text"
+                      value={form.licenceUrl.startsWith("data:") ? "" : form.licenceUrl}
+                      onChange={(e) => setForm({ ...form, licenceUrl: e.target.value })}
+                      className={inputCls}
+                      placeholder="Paste licence URL, or upload a file below"
+                    />
+                    <button type="button" onClick={() => licenceInputRef.current?.click()}
+                      className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap">
+                      📎 Upload
+                    </button>
+                  </div>
+                  <input ref={licenceInputRef} type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" onChange={handleLicenceFile} />
+                  {form.licenceUrl && (
+                    <div className="mt-1 flex items-center gap-2">
+                      <span className="text-xs text-green-600 dark:text-green-400">
+                        {form.licenceUrl.startsWith("data:image") ? "🖼️ Image uploaded" :
+                         form.licenceUrl.startsWith("data:") ? "📄 File uploaded" : "🔗 URL set"}
+                      </span>
+                      <button type="button" onClick={() => setForm({ ...form, licenceUrl: "" })} className="text-xs text-red-500 hover:text-red-700">Remove</button>
+                    </div>
+                  )}
+                  <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">Accepted: images, PDF, Word docs. Users can view this on the product page.</p>
                 </div>
                 <div className="col-span-1 sm:col-span-2 flex items-center gap-3">
                   <label className="relative inline-flex items-center cursor-pointer">

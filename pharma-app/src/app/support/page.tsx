@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { useSession } from "next-auth/react";
+import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const faqs = [
@@ -111,8 +111,8 @@ export default function SupportPage() {
     setChatInput("");
     setChatSending(true);
 
-    const userEmail = (session?.user as any)?.email ?? "";
-    const userName = (session?.user as any)?.name ?? "Guest";
+    const userEmail = session?.user?.email ?? "";
+    const userName = session?.user?.name ?? "Guest";
 
     // Optimistically add to UI (keep welcome if it's the only message)
     const tempMsg: ChatMsg = { id: `tmp_${Date.now()}`, from: "user", text, timestamp: new Date().toISOString() };

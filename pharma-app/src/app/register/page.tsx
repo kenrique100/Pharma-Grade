@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { signIn, signUp } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 export default function RegisterPage() {
@@ -27,15 +27,29 @@ export default function RegisterPage() {
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
-    setLoading(false);
-    toast.success("Account created! Please sign in.");
-    window.location.href = "/login";
+    try {
+      const result = await signUp.email({
+        name,
+        email,
+        password,
+        callbackURL: "/login",
+      });
+      if (result?.error) {
+        setError(result.error.message ?? "Registration failed. Please try again.");
+      } else {
+        toast.success("Account created! Please check your email to verify your account.");
+        window.location.href = "/login";
+      }
+    } catch {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleGoogleSignUp = () => {
+  const handleGoogleSignUp = async () => {
     toast("Google sign-up requires OAuth configuration.", { icon: "ℹ️" });
-    signIn("google", { callbackUrl: "/" });
+    await signIn.social({ provider: "google", callbackURL: "/" });
   };
 
   const inputCls = "w-full bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg px-4 py-3 focus:outline-none focus:border-red-500 transition-colors";

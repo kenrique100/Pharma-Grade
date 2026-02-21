@@ -1,62 +1,109 @@
 /**
- * Full NextAuth configuration — Node.js only (NOT edge-compatible).
- *
- * Extends the edge-safe authConfig with the Credentials provider (which
- * needs Prisma + bcrypt) and the optional Google OAuth provider.
+ * Server-side better-auth configuration.
  *
  * ⚠️  Import this file only in:
- *   • src/app/api/auth/[...nextauth]/route.ts
+ *   • src/app/api/auth/[...all]/route.ts
  *   • Server components / layouts (e.g. admin/layout.tsx)
  *
- *   The middleware (Edge Runtime) imports from auth.config.ts instead.
+ * The middleware (Edge Runtime) uses better-auth's getSession via headers.
  */
-import NextAuth, { type NextAuthConfig } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import GoogleProvider from "next-auth/providers/google";
-import bcrypt from "bcryptjs";
-import { authConfig } from "./auth.config";
-import { prisma } from "./db";
+import { betterAuth } from "better-auth";
+import { prismaAdapter } from "better-auth/adapters/prisma";
+import { nextCookies } from "better-auth/next-js";
+import { admin } from "better-auth/plugins";
+import { db } from "@/lib/db";
+import { sendVerificationEmail } from "@/lib/send-verification-email";
+import { sendResetPasswordEmail } from "@/lib/send-reset-password-email";
+import { ac, roles } from "@/lib/permissions";
 
-const providers: NextAuthConfig["providers"] = [
-  CredentialsProvider({
-    name: "credentials",
-    credentials: {
-      email: { label: "Email", type: "email" },
-      password: { label: "Password", type: "password" },
-    },
-    async authorize(credentials) {
-      if (!credentials?.email || !credentials?.password) return null;
-
-      const user = await prisma.user.findUnique({
-        where: { email: credentials.email as string },
-        select: { id: true, name: true, email: true, password: true, role: true },
-      });
-
-      if (!user || !user.password) return null;
-
-      const isValid = await bcrypt.compare(
-        credentials.password as string,
-        user.password
-      );
-      if (!isValid) return null;
-
-      return { id: user.id, name: user.name, email: user.email, role: user.role };
-    },
+export const auth = betterAuth({
+  database: prismaAdapter(db, {
+    provider: "postgresql",
   }),
-];
 
-// Add Google provider only when OAuth credentials are configured
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
-  providers.push(
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }) as any
-  );
-}
+  trustedOrigins: process.env.BETTER_AUTH_TRUSTED_ORIGINS
+    ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(",").map((o) => o.trim())
+    : [],
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  ...authConfig,
-  providers,
-  secret: process.env.AUTH_SECRET,
+  session: {
+    expiresIn: 60 * 60,       // 1 hour
+    updateAge: 60 * 5,         // refresh every 5 minutes
+    cookieCache: {
+      enabled: true,
+      maxAge: 60 * 5,
+    },
+  },
+
+  emailAndPassword: {
+    enabled: true,
+    requireEmailVerification: true,
+
+    sendResetPassword: async ({ user, url }) => {
+      if (!user?.email) throw new Error("User email is required for password reset");
+      await sendResetPasswordEmail({
+        to: user.email,
+        subject: "Reset your Pharma Grade password",
+        url,
+      });
+    },
+  },
+
+  // Rate limiting — race condition / brute-force protection
+  rateLimit: {
+    enabled: true,
+    window: 60,   // seconds
+    max: 10,      // max requests per window
+  },
+
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+
+    sendVerificationEmail: async ({ user, url }) => {
+      if (!user?.email) throw new Error("User email is required for verification");
+      const verificationUrl = new URL(url);
+      verificationUrl.searchParams.set("callbackURL", "/");
+      await sendVerificationEmail({
+        to: user.email,
+        verificationUrl: verificationUrl.toString(),
+        userName: user.name,
+      });
+    },
+  },
+
+  user: {
+    additionalFields: {
+      gender: {
+        type: "string",
+        required: false,
+        input: true,
+      },
+    },
+  },
+
+  socialProviders: {
+    ...(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET
+      ? {
+          google: {
+            clientId: process.env.GOOGLE_CLIENT_ID,
+            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+            redirectURI: `${process.env.BETTER_AUTH_URL ?? ""}/api/auth/callback/google`,
+          },
+        }
+      : {}),
+  },
+
+  plugins: [
+    admin({
+      ac,
+      roles,
+      defaultRole: "user",
+      adminRoles: ["admin", "superadmin"],
+    }),
+
+    // Sets the auth cookie automatically in Next.js server actions / route handlers
+    nextCookies(),
+  ],
 });
+
+export type Session = typeof auth.$Infer.Session;

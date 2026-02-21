@@ -4,8 +4,6 @@
     <list default="true" id="6cba7e50-c6f8-4ea5-895d-87ba1219e2aa" name="Changes" comment="updated files">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pharma-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pharma-app/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pharma-app/prisma/schema.prisma" beforeDir="false" afterPath="$PROJECT_DIR$/pharma-app/prisma/schema.prisma" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pharma-app/src/lib/auth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/pharma-app/src/lib/auth.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,7 +13,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="copilot/fix-deployment-structure" />
+        <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -48,7 +46,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "#11 on copilot/fix-prisma-schema-validation",
     "javascript.preferred.runtime.type.id": "node",
     "last_opened_file_path": "C:/My Web Sites",
     "nodejs_package_manager_path": "npm",
@@ -82,6 +80,7 @@
       <workItem from="1771622081326" duration="9743000" />
       <workItem from="1771634954447" duration="834000" />
       <workItem from="1771700502103" duration="4733000" />
+      <workItem from="1771713881597" duration="674000" />
     </task>
     <task id="LOCAL-00001" summary="update config">
       <option name="closed" value="true" />

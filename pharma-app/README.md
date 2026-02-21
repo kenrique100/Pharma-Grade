@@ -141,6 +141,14 @@ npm run db:migrate
 
 ## 5. Seed the admin account
 
+For a **first-time development setup**, use the combined command that pushes the schema and seeds in one step:
+
+```bash
+npm run db:setup
+```
+
+If the database tables already exist (e.g. after `npm run db:push` or `npm run db:migrate`), seed only:
+
 ```bash
 npm run db:seed
 ```
@@ -219,6 +227,7 @@ npm run lint         # ESLint
 npm run db:generate  # (Re-)generate Prisma TypeScript client
 npm run db:push      # Push schema to DB without migrations (quick dev setup)
 npm run db:migrate   # Apply pending migrations (production-safe)
+npm run db:setup     # Push schema + seed (first-time dev setup in one command)
 npm run db:seed      # Seed admin + demo users into the database
 npm run db:studio    # Open Prisma Studio visual editor at http://localhost:5555
 npm run db:reset     # ⚠️  Drop & recreate DB, re-run all migrations + seed
@@ -283,6 +292,7 @@ Middleware (Edge) → reads JWT from cookie via auth.config.ts
 | `SASL: client password must be a string` | `DATABASE_URL` is not set — copy `.env.example` to `.env.local` and fill in the value |
 | `PrismaClientInitializationError` | Check `DATABASE_URL` is set and the DB is reachable |
 | `Can't reach database server` | For Neon: enable **pooled connection** mode in the dashboard |
+| `The table 'public.User' does not exist` | Run `npm run db:setup` (dev) or `npm run db:migrate && npm run db:seed` (production) to create tables before seeding |
 | Build fails with `prisma generate` | Run `npm install` first, then `npm run db:generate` |
 | Admin login fails | Run `npm run db:seed` to create the admin user |
 | `BETTER_AUTH_SECRET` error | Generate with `openssl rand -base64 32` and add to `.env.local` |

@@ -2,14 +2,21 @@
 
 import { useParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
-import { getProductsByCategory, categories } from "@/lib/products";
+import { useAdminStore } from "@/lib/adminStore";
 import Link from "next/link";
 
 export default function CategoryPage() {
   const params = useParams();
   const slug = params.slug as string;
+  const { products, categories } = useAdminStore();
   const category = categories.find((c) => c.slug === slug);
-  const categoryProducts = getProductsByCategory(slug);
+  const categoryProducts = category
+    ? products.filter((p) => p.category === category.name)
+    : products.filter(
+        (p) =>
+          p.category.toLowerCase() === slug ||
+          p.category.toLowerCase().replace(/\s+/g, "-") === slug
+      );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">

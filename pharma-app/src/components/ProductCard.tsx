@@ -47,13 +47,18 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-600 transition-all duration-300 hover:shadow-lg hover:shadow-red-100 dark:hover:shadow-red-900/20">
         <div className="relative h-48 bg-gray-50 dark:bg-gray-900 overflow-hidden">
           {!imgError ? (
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-cover"
-              onError={() => setImgError(true)}
-            />
+            product.image.startsWith("data:") ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+            ) : (
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                className="object-cover"
+                onError={() => setImgError(true)}
+              />
+            )
           ) : (
             <div className="w-full h-full flex items-center justify-center text-6xl bg-gradient-to-br from-gray-100 dark:from-gray-800 to-gray-200 dark:to-gray-900">
               {emoji}

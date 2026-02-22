@@ -139,18 +139,22 @@ export default function ProductPage() {
           </Link>
 
           {/* Product Licence Section */}
-          {product.licenceUrl && (
-            <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
-              <button
-                onClick={() => setShowLicence(!showLicence)}
-                className="w-full flex items-center justify-between text-left"
-              >
-                <span className="text-gray-900 dark:text-white font-semibold text-sm">📋 Product Licence / Certificate</span>
-                <span className="text-gray-400 text-xs">{showLicence ? "▲ Hide" : "▼ View"}</span>
-              </button>
-              {showLicence && renderLicence()}
-            </div>
-          )}
+          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+            <button
+              onClick={() => setShowLicence(!showLicence)}
+              className="w-full flex items-center justify-between text-left"
+            >
+              <span className="text-gray-900 dark:text-white font-semibold text-sm">📋 Product Licence / Certificate</span>
+              <span className="text-gray-400 text-xs">{showLicence ? "▲ Hide" : "▼ View"}</span>
+            </button>
+            {showLicence && (
+              product.licenceUrl ? renderLicence() : (
+                <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                  Certificate of authenticity available upon request. Please contact support for details.
+                </p>
+              )
+            )}
+          </div>
         </div>
       </div>
     </div>

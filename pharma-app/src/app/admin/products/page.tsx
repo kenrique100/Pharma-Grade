@@ -23,7 +23,7 @@ type FormState = {
 };
 
 const emptyForm: FormState = {
-  name: "", description: "", price: "", originalPrice: "", category: "Strength",
+  name: "", description: "", price: "", originalPrice: "", category: "Injectable Steroids",
   inStock: true, badge: "", promotionType: "none", promotionValue: "", image: "",
   licenceUrl: "",
 };

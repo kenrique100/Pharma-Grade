@@ -17,7 +17,7 @@ export default function Footer() {
           <div>
             <h3 className="text-gray-900 dark:text-white font-semibold mb-4">Products</h3>
             <ul className="space-y-2">
-              {["Injectable Steroids", "Bulking Steroids", "Fat Loss", "Post Cycle Therapy", "HGH", "Botox"].map((cat) => (
+              {["Injectable Steroids", "Bulking Steroids", "Fat Loss", "Post Cycle Therapy", "HGH", "Short Cycle", "Sex"].map((cat) => (
                 <li key={cat}>
                   <Link href={`/categories/${cat.toLowerCase().replace(/\s+/g, "-")}`} className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">{cat}</Link>
                 </li>

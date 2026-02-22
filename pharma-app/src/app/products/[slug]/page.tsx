@@ -80,13 +80,18 @@ export default function ProductPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
         <div className="relative bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden h-96 border border-gray-200 dark:border-gray-700">
           {!imgError ? (
-            <Image
-              src={product.image}
-              alt={product.name}
-              fill
-              className="object-cover"
-              onError={() => setImgError(true)}
-            />
+            product.image.startsWith("data:") ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+            ) : (
+              <Image
+                src={product.image}
+                alt={product.name}
+                fill
+                className="object-cover"
+                onError={() => setImgError(true)}
+              />
+            )
           ) : (
             <div className="w-full h-full flex items-center justify-center text-8xl">
               {emoji}

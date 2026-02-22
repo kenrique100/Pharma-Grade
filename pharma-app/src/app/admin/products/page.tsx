@@ -9,14 +9,10 @@ const EMOJI_MAP: Record<string, string> = {
   Orals: "💊", Injectables: "💉", Peptides: "🧬", PCT: "🛡️", "Fat Loss": "🔥", "Sexual Health": "❤️",
 };
 
-function isBase64Content(url: string) {
-  return url.startsWith("data:");
-}
-
 function licenceLabel(url: string) {
   if (url.startsWith("data:image")) return "🖼️ Image uploaded";
   if (url.startsWith("data:")) return "📄 File uploaded";
-  return "🔗 URL set";
+  return "📄 File uploaded";
 }
 
 type FormState = {
@@ -27,7 +23,7 @@ type FormState = {
 };
 
 const emptyForm: FormState = {
-  name: "", description: "", price: "", originalPrice: "", category: "Orals",
+  name: "", description: "", price: "", originalPrice: "", category: "Strength",
   inStock: true, badge: "", promotionType: "none", promotionValue: "", image: "",
   licenceUrl: "",
 };
@@ -39,6 +35,7 @@ export default function AdminProductsPage() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [search, setSearch] = useState("");
   const licenceInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   const filtered = products.filter(
     (p) => p.name.toLowerCase().includes(search.toLowerCase()) || p.category.toLowerCase().includes(search.toLowerCase())
@@ -100,6 +97,16 @@ export default function AdminProductsPage() {
     const reader = new FileReader();
     reader.onload = () => {
       setForm((prev) => ({ ...prev, licenceUrl: reader.result as string }));
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleImageFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setForm((prev) => ({ ...prev, image: reader.result as string }));
     };
     reader.readAsDataURL(file);
   };
@@ -179,9 +186,22 @@ export default function AdminProductsPage() {
                     className={inputCls + " disabled:opacity-50"} placeholder={form.promotionType === "percentage" ? "e.g. 15" : "e.g. 10"} />
                 </div>
                 <div className="col-span-1 sm:col-span-2">
-                  <label className={labelCls}>Product Image URL</label>
-                  <input type="text" value={form.image} onChange={(e) => setForm({ ...form, image: e.target.value })} className={inputCls} placeholder="/images/products/product-name.webp" />
-                  <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">Use /images/products/filename.webp for uploaded images, or an external URL.</p>
+                  <label className={labelCls}>Product Image</label>
+                  <div className="flex gap-2 items-center">
+                    {form.image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={form.image} alt="Preview" className="w-12 h-12 rounded-lg object-cover border border-gray-200 dark:border-gray-700 flex-shrink-0" />
+                    )}
+                    <button type="button" onClick={() => imageInputRef.current?.click()}
+                      className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap">
+                      🖼️ {form.image ? "Change Image" : "Upload Image"}
+                    </button>
+                    {form.image && (
+                      <button type="button" onClick={() => setForm({ ...form, image: "" })} className="text-xs text-red-500 hover:text-red-700">Remove</button>
+                    )}
+                  </div>
+                  <input ref={imageInputRef} type="file" accept="image/*" className="hidden" onChange={handleImageFile} />
+                  <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">Upload a product image from your device (JPEG, PNG, WebP, etc.).</p>
                 </div>
                 <div className="col-span-1 sm:col-span-2">
                   <label className={labelCls}>Description *</label>
@@ -190,23 +210,18 @@ export default function AdminProductsPage() {
                 <div className="col-span-1 sm:col-span-2">
                   <label className={labelCls}>Product Licence (optional)</label>
                   <div className="flex gap-2 items-center">
-                    <input
-                      type="text"
-                      value={isBase64Content(form.licenceUrl) ? "" : form.licenceUrl}
-                      onChange={(e) => setForm({ ...form, licenceUrl: e.target.value })}
-                      className={inputCls}
-                      placeholder="Paste licence URL, or upload a file below"
-                    />
                     <button type="button" onClick={() => licenceInputRef.current?.click()}
-                      className="flex-shrink-0 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap">
-                      📎 Upload
+                      className="bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-3 py-2 rounded-lg text-xs font-medium transition-colors whitespace-nowrap">
+                      📎 {form.licenceUrl ? "Change Licence" : "Upload Licence"}
                     </button>
+                    {form.licenceUrl && (
+                      <button type="button" onClick={() => setForm({ ...form, licenceUrl: "" })} className="text-xs text-red-500 hover:text-red-700">Remove</button>
+                    )}
                   </div>
                   <input ref={licenceInputRef} type="file" accept="image/*,.pdf,.doc,.docx" className="hidden" onChange={handleLicenceFile} />
                   {form.licenceUrl && (
-                    <div className="mt-1 flex items-center gap-2">
+                    <div className="mt-1">
                       <span className="text-xs text-green-600 dark:text-green-400">{licenceLabel(form.licenceUrl)}</span>
-                      <button type="button" onClick={() => setForm({ ...form, licenceUrl: "" })} className="text-xs text-red-500 hover:text-red-700">Remove</button>
                     </div>
                   )}
                   <p className="text-gray-400 dark:text-gray-500 text-xs mt-1">Accepted: images, PDF, Word docs. Users can view this on the product page.</p>

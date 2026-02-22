@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import ProductCard from "@/components/ProductCard";
-import { products, categories } from "@/lib/products";
+import { useAdminStore } from "@/lib/adminStore";
 
 export default function ProductsPage() {
+  const { products, categories } = useAdminStore();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("default");
   const [search, setSearch] = useState("");

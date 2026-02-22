@@ -93,10 +93,6 @@ export default function LoginPage() {
               <Link href="/register" className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 font-medium">Register here</Link>
             </p>
           </div>
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-xs text-gray-400">
-            <p className="font-medium text-gray-500 dark:text-gray-400 mb-1">Demo credentials:</p>
-            <p>Admin: admin@pharmagrade.com / admin123</p>
-          </div>
         </div>
       </div>
     </div>

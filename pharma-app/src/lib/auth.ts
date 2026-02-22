@@ -13,9 +13,16 @@ export const auth = betterAuth({
     provider: "postgresql",
   }),
 
-  trustedOrigins: process.env.BETTER_AUTH_TRUSTED_ORIGINS
-    ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(",").map((o) => o.trim())
-    : [],
+  trustedOrigins: [
+    // Always trust the configured app URL (works in both dev and prod)
+    ...(process.env.BETTER_AUTH_URL ? [process.env.BETTER_AUTH_URL] : []),
+    // Always trust localhost in non-production environments
+    ...(process.env.NODE_ENV !== "production" ? ["http://localhost:3000"] : []),
+    // Any additional origins supplied via env var (comma-separated)
+    ...(process.env.BETTER_AUTH_TRUSTED_ORIGINS
+      ? process.env.BETTER_AUTH_TRUSTED_ORIGINS.split(",").map((o) => o.trim())
+      : []),
+  ],
 
   session: {
     expiresIn: 60 * 60,       // 1 hour

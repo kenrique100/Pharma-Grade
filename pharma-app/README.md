@@ -90,7 +90,10 @@ Open `.env.local` and fill in **all** values:
 # ── Required ────────────────────────────────────────────────────────
 DATABASE_URL=postgresql://USER:PASSWORD@HOST/pharmagrade?sslmode=require
 BETTER_AUTH_SECRET=replace-with-a-random-32-char-secret
-BETTER_AUTH_URL=http://localhost:3000        # change to your domain in production
+
+# ⚠️  For local development always use http://localhost:3000 here.
+#     Setting this to the production URL while running locally causes 403 errors.
+BETTER_AUTH_URL=http://localhost:3000
 NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 
 # ── Optional: Google OAuth ─────────────────────────────────────────
@@ -185,6 +188,7 @@ Open [http://localhost:3000](http://localhost:3000).
    | `BETTER_AUTH_SECRET` | Random 32-char secret (`openssl rand -base64 32`) |
    | `BETTER_AUTH_URL` | `https://your-app.vercel.app` |
    | `NEXT_PUBLIC_BETTER_AUTH_URL` | `https://your-app.vercel.app` |
+   | `BETTER_AUTH_TRUSTED_ORIGINS` | `https://your-app.vercel.app` (same as above) |
    | `RESEND_API_KEY` | Your Resend key (optional) |
    | `ADMIN_EMAIL` | Admin email for chat notifications (optional) |
    | `FROM_EMAIL` | Sender address — must be a verified Resend domain (optional) |
@@ -280,6 +284,7 @@ Middleware (Edge) → reads JWT from cookie via auth.config.ts
 
 | Problem | Solution |
 |---------|----------|
+| `403 FORBIDDEN` / `Invalid origin: http://localhost:3000` | `BETTER_AUTH_URL` is set to the production URL. Change it to `http://localhost:3000` in `.env.local` for local development |
 | `SASL: client password must be a string` | `DATABASE_URL` is not set — copy `.env.example` to `.env.local` and fill in the value |
 | `PrismaClientInitializationError` | Check `DATABASE_URL` is set and the DB is reachable |
 | `Can't reach database server` | For Neon: enable **pooled connection** mode in the dashboard |

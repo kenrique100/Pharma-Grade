@@ -5,7 +5,7 @@ import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const faqs = [
-  { q: "How do I pay with cryptocurrency?", a: "At checkout, select your preferred cryptocurrency (BTC, ETH, USDC, or LTC). Send the exact amount to our wallet address displayed and paste your transaction hash to confirm your order. Orders are confirmed after 1 network confirmation." },
+  { q: "How do I pay with cryptocurrency?", a: "At checkout, select your preferred cryptocurrency (BTC, USDT or USDC). Send the exact amount to our wallet address displayed and paste your transaction hash to confirm your order. Orders are confirmed after 1 network confirmation. BTC and USDT (TRC-20) hashes are 64 hex characters; USDC (ERC-20) hashes start with 0x followed by 64 hex characters." },
   { q: "How long does shipping take?", a: "Standard delivery takes 7-14 business days internationally. Express options (3-7 days) are available at checkout. All orders ship in unmarked, discreet packaging." },
   { q: "How do I track my order?", a: "Once your order ships, you will receive a tracking number via email. You can use this to monitor your shipment through our carrier's website." },
   { q: "Are products lab tested?", a: "Yes — every product is third-party tested for purity and potency. Certificates of Analysis (CoA) are available on request for any product." },

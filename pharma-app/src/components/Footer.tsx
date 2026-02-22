@@ -36,7 +36,7 @@ export default function Footer() {
           <div>
             <h3 className="text-gray-900 dark:text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-2">
-              <li><span className="text-gray-500 dark:text-gray-400 text-sm">24/7 Live Chat</span></li>
+              <li><Link href="/support#chat" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">💬 24/7 Live Chat</Link></li>
               <li><a href="mailto:support@pharmagrade.com" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">support@pharmagrade.com</a></li>
               <li><span className="text-gray-500 dark:text-gray-400 text-sm">Worldwide Shipping</span></li>
               <li><span className="text-gray-500 dark:text-gray-400 text-sm">Crypto Payments Accepted</span></li>

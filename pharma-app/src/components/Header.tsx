@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useTheme } from "next-themes";
 import CartButton from "./CartButton";
+import GoogleTranslate from "./GoogleTranslate";
 
 export default function Header() {
   const { data: session } = useSession();
@@ -54,6 +55,8 @@ export default function Header() {
                 )}
               </button>
             )}
+
+            <GoogleTranslate />
 
             <CartButton />
 

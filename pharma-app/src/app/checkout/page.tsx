@@ -5,11 +5,35 @@ import { useCart } from "@/lib/cart";
 import toast from "react-hot-toast";
 
 const CRYPTO_ADDRESSES = {
-  BTC: "bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh",
-  ETH: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-  USDC: "0x71C7656EC7ab88b098defB751B7401B5f6d8976F",
-  LTC: "LYQAfYFmfkCFV9PVTiVCXuWQ1oPGBjJkzE",
+  BTC: "3ALPzTcMeU8WH3Pg5YJhx8GMUpcZvBMr96",
+  USDT: "THsruWVd6Es1Qh5pmJ1uyrfSrX5DjD4CwC",
+  USDC: "0x5c5f0d12507cc4e123ac87de690bf442425c82ca",
 };
+
+const CRYPTO_NETWORKS: Record<string, string> = {
+  BTC: "Bitcoin Network",
+  USDT: "TRON (TRC-20)",
+  USDC: "Ethereum (ERC-20)",
+};
+
+/** Basic tx-hash format validation per network */
+function isValidTxHash(crypto: string, hash: string): boolean {
+  const h = hash.trim();
+  if (!h) return false;
+  switch (crypto) {
+    case "BTC":
+      // BTC txid: 64 hex chars
+      return /^[a-fA-F0-9]{64}$/.test(h);
+    case "USDT":
+      // TRC-20 txid: 64 hex chars
+      return /^[a-fA-F0-9]{64}$/.test(h);
+    case "USDC":
+      // ERC-20 txid: 0x + 64 hex chars
+      return /^0x[a-fA-F0-9]{64}$/.test(h);
+    default:
+      return h.length >= 20;
+  }
+}
 
 type CryptoType = keyof typeof CRYPTO_ADDRESSES;
 
@@ -56,6 +80,15 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (!txHash.trim()) {
       toast.error("Please enter your transaction hash.");
+      return;
+    }
+    if (!isValidTxHash(selectedCrypto, txHash)) {
+      const examples: Record<string, string> = {
+        BTC: "a 64-character hexadecimal string",
+        USDT: "a 64-character hexadecimal string (TRC-20)",
+        USDC: "0x followed by 64 hex characters (ERC-20)",
+      };
+      toast.error(`Invalid ${selectedCrypto} transaction hash. Expected: ${examples[selectedCrypto]}.`);
       return;
     }
     setLoading(true);
@@ -135,7 +168,10 @@ export default function CheckoutPage() {
 
             <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 mb-4">
               <div className="flex items-center justify-between mb-2">
-                <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wide">{selectedCrypto} Address</p>
+                <div>
+                  <p className="text-gray-500 dark:text-gray-400 text-xs font-medium uppercase tracking-wide">{selectedCrypto} Address</p>
+                  <p className="text-gray-400 dark:text-gray-500 text-xs">{CRYPTO_NETWORKS[selectedCrypto]}</p>
+                </div>
                 <button type="button" onClick={copyAddress} className="text-red-600 dark:text-red-400 text-xs font-medium hover:underline">Copy</button>
               </div>
               <p className="text-gray-900 dark:text-white font-mono text-xs break-all">{CRYPTO_ADDRESSES[selectedCrypto]}</p>
@@ -153,7 +189,7 @@ export default function CheckoutPage() {
                 value={txHash}
                 onChange={(e) => setTxHash(e.target.value)}
                 className="w-full bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-white rounded-lg px-3 py-2 focus:outline-none focus:border-red-500 font-mono text-sm"
-                placeholder="0x... or txid..."
+                placeholder={selectedCrypto === "USDC" ? "0x..." : "64-character tx hash..."}
               />
             </div>
           </div>
@@ -179,7 +215,7 @@ export default function CheckoutPage() {
             <span>${cartTotal.toFixed(2)}</span>
           </div>
           <div className="mt-4 p-3 bg-gray-50 dark:bg-gray-900 rounded-lg">
-            <p className="text-gray-500 dark:text-gray-400 text-xs">💡 Accepted: Bitcoin (BTC), Ethereum (ETH), USDC, Litecoin (LTC)</p>
+            <p className="text-gray-500 dark:text-gray-400 text-xs">💡 Accepted: Bitcoin (BTC), Tether USDT (TRC-20), USD Coin USDC (ERC-20)</p>
           </div>
         </div>
       </div>

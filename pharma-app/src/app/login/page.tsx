@@ -96,7 +96,6 @@ export default function LoginPage() {
           <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg text-xs text-gray-400">
             <p className="font-medium text-gray-500 dark:text-gray-400 mb-1">Demo credentials:</p>
             <p>Admin: admin@pharmagrade.com / admin123</p>
-            <p>User: user@pharmagrade.com / user123</p>
           </div>
         </div>
       </div>

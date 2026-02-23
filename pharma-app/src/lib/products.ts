@@ -1,13 +1,13 @@
 import { Product, Category } from "@/types";
 
 export const categories: Category[] = [
-  { name: "Short Cycle", slug: "short-cycle", description: "Short half-life compounds", color: "bg-blue-500", icon: "⚡" },
-  { name: "Sex", slug: "sex", description: "Sexual health & performance", color: "bg-pink-600", icon: "❤️" },
-  { name: "Post Cycle Therapy", slug: "post-cycle-therapy", description: "PCT & hormone restoration", color: "bg-teal-600", icon: "🛡️" },
-  { name: "Injectable Steroids", slug: "injectable-steroids", description: "Injectable anabolic steroids", color: "bg-blue-600", icon: "🔬" },
-  { name: "HGH", slug: "hgh", description: "Human growth hormone & peptides", color: "bg-purple-600", icon: "🧬" },
-  { name: "Fat Loss", slug: "fat-loss", description: "Fat burners & cutting agents", color: "bg-orange-600", icon: "🔥" },
-  { name: "Bulking Steroids", slug: "bulking-steroids", description: "Mass & bulking compounds", color: "bg-red-600", icon: "🏋️" },
+  { name: "Short Cycle", slug: "short-cycle", description: "Short half-life compounds", color: "bg-blue-500", icon: "⚡", image: "/images/products/trenbolone-acetate-100.webp" },
+  { name: "Sex", slug: "sex", description: "Sexual health & performance", color: "bg-pink-600", icon: "❤️", image: "/images/products/sildenafil-100mg.webp" },
+  { name: "Post Cycle Therapy", slug: "post-cycle-therapy", description: "PCT & hormone restoration", color: "bg-teal-600", icon: "🛡️", image: "/images/products/nolvadex-20mg.webp" },
+  { name: "Injectable Steroids", slug: "injectable-steroids", description: "Injectable anabolic steroids", color: "bg-blue-600", icon: "🔬", image: "/images/products/testosterone-enanthate-250.webp" },
+  { name: "HGH", slug: "hgh", description: "Human growth hormone & peptides", color: "bg-purple-600", icon: "🧬", image: "/images/products/hgh-100iu.webp" },
+  { name: "Fat Loss", slug: "fat-loss", description: "Fat burners & cutting agents", color: "bg-orange-600", icon: "🔥", image: "/images/products/clenbuterol-40mcg.webp" },
+  { name: "Bulking Steroids", slug: "bulking-steroids", description: "Mass & bulking compounds", color: "bg-red-600", icon: "🏋️", image: "/images/products/dianabol-20mg.webp" },
 ];
 
 export const products: Product[] = [

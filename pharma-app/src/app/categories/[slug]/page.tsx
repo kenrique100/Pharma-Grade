@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import ProductCard from "@/components/ProductCard";
 import { useAdminStore } from "@/lib/adminStore";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function CategoryPage() {
   const params = useParams();
@@ -24,10 +25,18 @@ export default function CategoryPage() {
         <Link href="/products" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm">← All Products</Link>
       </div>
       {category && (
-        <div className="mb-8">
-          <div className="text-5xl mb-4">{category.icon}</div>
-          <h1 className="text-3xl font-black text-gray-900 dark:text-white mb-2">{category.name}</h1>
-          <p className="text-gray-500 dark:text-gray-400">{category.description}</p>
+        <div className="mb-8 flex items-center gap-4">
+          {category.image ? (
+            <div className="relative w-16 h-16 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 flex-shrink-0">
+              <Image src={category.image} alt={category.name} fill className="object-cover" priority />
+            </div>
+          ) : (
+            <div className="text-5xl">{category.icon}</div>
+          )}
+          <div>
+            <h1 className="text-3xl font-black text-gray-900 dark:text-white mb-1">{category.name}</h1>
+            <p className="text-gray-500 dark:text-gray-400">{category.description}</p>
+          </div>
         </div>
       )}
       {categoryProducts.length === 0 ? (

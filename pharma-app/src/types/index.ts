@@ -35,4 +35,5 @@ export interface Category {
   description: string;
   color: string;
   icon: string;
+  image?: string;
 }

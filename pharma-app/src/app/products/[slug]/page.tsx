@@ -78,17 +78,18 @@ export default function ProductPage() {
         <Link href="/products" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm">← Back to Products</Link>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-        <div className="relative bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden h-96 border border-gray-200 dark:border-gray-700">
+        <div className="relative bg-gray-100 dark:bg-gray-800 rounded-2xl overflow-hidden aspect-square max-h-[28rem] border border-gray-200 dark:border-gray-700">
           {!imgError ? (
             product.image.startsWith("data:") ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+              <img src={product.image} alt={product.name} className="w-full h-full object-contain" onError={() => setImgError(true)} />
             ) : (
               <Image
                 src={product.image}
                 alt={product.name}
                 fill
-                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-contain"
                 onError={() => setImgError(true)}
               />
             )

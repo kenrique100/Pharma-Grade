@@ -49,13 +49,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           {!imgError ? (
             product.image.startsWith("data:") ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
+              <img src={product.image} alt={product.name} className="w-full h-full object-contain" onError={() => setImgError(true)} />
             ) : (
               <Image
                 src={product.image}
                 alt={product.name}
                 fill
-                className="object-cover"
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                className="object-contain"
                 onError={() => setImgError(true)}
               />
             )

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/lib/cart";
+import { useReviewStore } from "@/lib/reviewStore";
 import { Product } from "@/types";
 import toast from "react-hot-toast";
 import { useState } from "react";
@@ -27,7 +28,14 @@ const categoryEmoji: Record<string, string> = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCart((state) => state.addItem);
+  const getProductReviews = useReviewStore((s) => s.getProductReviews);
   const [imgError, setImgError] = useState(false);
+
+  const userReviews = getProductReviews(product.id);
+  const totalReviews = product.reviews + userReviews.length;
+  const avgRating = userReviews.length > 0
+    ? (product.rating * product.reviews + userReviews.reduce((s, r) => s + r.rating, 0)) / totalReviews
+    : product.rating;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -49,14 +57,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           {!imgError ? (
             product.image.startsWith("data:") ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={product.image} alt={product.name} className="w-full h-full object-contain" onError={() => setImgError(true)} />
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" onError={() => setImgError(true)} />
             ) : (
               <Image
                 src={product.image}
                 alt={product.name}
                 fill
                 sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                className="object-contain"
+                className="object-cover"
                 onError={() => setImgError(true)}
               />
             )
@@ -84,9 +92,9 @@ export default function ProductCard({ product }: ProductCardProps) {
           <h3 className="text-gray-900 dark:text-white font-semibold text-sm mb-2 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-2">{product.name}</h3>
           <div className="flex items-center space-x-1 mb-3">
             <div className="flex text-yellow-500 text-xs">
-              {"★".repeat(Math.floor(product.rating))}{"☆".repeat(5 - Math.floor(product.rating))}
+              {"★".repeat(Math.floor(avgRating))}{"☆".repeat(5 - Math.floor(avgRating))}
             </div>
-            <span className="text-gray-400 dark:text-gray-400 text-xs">({product.reviews})</span>
+            <span className="text-gray-400 dark:text-gray-400 text-xs">({totalReviews})</span>
           </div>
           <div className="flex items-center justify-between">
             <div>

@@ -25,6 +25,8 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 189,
     badge: "Best Seller",
+    unitsPerPack: 1,
+    dosePerUnit: "100mg/mL (10mL vial)",
   },
   {
     id: "6",
@@ -39,6 +41,8 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 94,
     badge: "New",
+    unitsPerPack: 1,
+    dosePerUnit: "100mg/mL (10mL vial)",
   },
 
   // ── Sex ───────────────────────────────────────────────────────────────────
@@ -55,6 +59,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 203,
     badge: "Best Seller",
+    unitsPerPack: 50,
+    dosePerUnit: "100mg",
   },
   {
     id: "8",
@@ -69,6 +75,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 178,
     badge: "New",
+    unitsPerPack: 50,
+    dosePerUnit: "20mg",
   },
 
   // ── Post Cycle Therapy ─────────────────────────────────────────────────────
@@ -85,6 +93,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 156,
     badge: "Best Seller",
+    unitsPerPack: 50,
+    dosePerUnit: "20mg",
   },
   {
     id: "11",
@@ -99,6 +109,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 134,
     badge: "Best Seller",
+    unitsPerPack: 50,
+    dosePerUnit: "50mg",
   },
   {
     id: "12",
@@ -113,6 +125,8 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 89,
     badge: "New",
+    unitsPerPack: 30,
+    dosePerUnit: "25mg",
   },
 
   // ── Injectable Steroids ────────────────────────────────────────────────────
@@ -130,6 +144,8 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 215,
     badge: "Best Seller",
+    unitsPerPack: 1,
+    dosePerUnit: "250mg/mL (10mL vial)",
   },
   {
     id: "17",
@@ -145,6 +161,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 178,
     badge: "New",
+    unitsPerPack: 1,
+    dosePerUnit: "250mg/mL (10mL vial)",
   },
   {
     id: "18",
@@ -160,6 +178,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 142,
     badge: "Best Seller",
+    unitsPerPack: 1,
+    dosePerUnit: "300mg/mL (10mL vial)",
   },
   {
     id: "19",
@@ -175,6 +195,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 163,
     badge: "New",
+    unitsPerPack: 1,
+    dosePerUnit: "270mg/mL (10mL vial)",
   },
   {
     id: "20",
@@ -190,6 +212,8 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 101,
     badge: "Sale",
+    unitsPerPack: 1,
+    dosePerUnit: "300mg/mL (10mL vial)",
   },
   {
     id: "35",
@@ -204,6 +228,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 88,
     badge: "New",
+    unitsPerPack: 1,
+    dosePerUnit: "300mg/mL (10mL vial)",
   },
 
   // ── HGH ───────────────────────────────────────────────────────────────────
@@ -221,6 +247,8 @@ export const products: Product[] = [
     rating: 4.9,
     reviews: 203,
     badge: "Sale",
+    unitsPerPack: 10,
+    dosePerUnit: "10IU per vial",
   },
   {
     id: "36",
@@ -236,6 +264,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 112,
     badge: "New",
+    unitsPerPack: 1,
+    dosePerUnit: "5mg per vial",
   },
   {
     id: "37",
@@ -250,6 +280,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 95,
     badge: "New",
+    unitsPerPack: 1,
+    dosePerUnit: "5mg per vial",
   },
 
   // ── Fat Loss ───────────────────────────────────────────────────────────────
@@ -267,6 +299,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 167,
     badge: "Best Seller",
+    unitsPerPack: 100,
+    dosePerUnit: "40mcg",
   },
   {
     id: "25",
@@ -281,6 +315,8 @@ export const products: Product[] = [
     rating: 4.6,
     reviews: 98,
     badge: "New",
+    unitsPerPack: 100,
+    dosePerUnit: "25mcg",
   },
   {
     id: "26",
@@ -295,6 +331,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 121,
     badge: "Sale",
+    unitsPerPack: 60,
+    dosePerUnit: "10mg",
   },
   {
     id: "38",
@@ -309,6 +347,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 64,
     badge: "New",
+    unitsPerPack: 1,
+    dosePerUnit: "10mg per vial",
   },
 
   // ── Bulking Steroids ───────────────────────────────────────────────────────
@@ -326,6 +366,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 98,
     badge: "Best Seller",
+    unitsPerPack: 100,
+    dosePerUnit: "20mg",
   },
   {
     id: "28",
@@ -340,6 +382,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 73,
     badge: "Sale",
+    unitsPerPack: 100,
+    dosePerUnit: "50mg",
   },
   {
     id: "39",
@@ -355,6 +399,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 143,
     badge: "Best Seller",
+    unitsPerPack: 100,
+    dosePerUnit: "10mg",
   },
   {
     id: "29",
@@ -370,6 +416,8 @@ export const products: Product[] = [
     rating: 4.8,
     reviews: 108,
     badge: "New",
+    unitsPerPack: 60,
+    dosePerUnit: "50mg",
   },
   {
     id: "30",
@@ -384,6 +432,8 @@ export const products: Product[] = [
     rating: 4.5,
     reviews: 56,
     badge: "New",
+    unitsPerPack: 100,
+    dosePerUnit: "10mg",
   },
   {
     id: "40",
@@ -399,6 +449,8 @@ export const products: Product[] = [
     rating: 4.7,
     reviews: 117,
     badge: "Best Seller",
+    unitsPerPack: 100,
+    dosePerUnit: "50mg",
   },
 ];
 

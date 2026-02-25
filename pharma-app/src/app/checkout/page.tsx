@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
+import { usePurchaseStore } from "@/lib/purchaseStore";
+import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
 
 const CRYPTO_ADDRESSES = {
@@ -39,6 +41,8 @@ type CryptoType = keyof typeof CRYPTO_ADDRESSES;
 
 export default function CheckoutPage() {
   const { items, total, clearCart, itemCount } = useCart();
+  const addPurchase = usePurchaseStore((s) => s.addPurchase);
+  const { data: session } = useSession();
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [selectedCrypto, setSelectedCrypto] = useState<CryptoType>("BTC");
@@ -93,6 +97,9 @@ export default function CheckoutPage() {
     }
     setLoading(true);
     setTimeout(() => {
+      if (session?.user?.id) {
+        addPurchase(session.user.id, items.map((i) => i.id));
+      }
       clearCart();
       setSubmitted(true);
       setLoading(false);

@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6cba7e50-c6f8-4ea5-895d-87ba1219e2aa" name="Changes" comment="updated package">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pharma-app/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/pharma-app/package-lock.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +81,9 @@
       <workItem from="1771634954447" duration="834000" />
       <workItem from="1771700502103" duration="4733000" />
       <workItem from="1771713881597" duration="674000" />
-      <workItem from="1771800635875" duration="808000" />
+      <workItem from="1771800635875" duration="2686000" />
+      <workItem from="1772049328147" duration="697000" />
+      <workItem from="1772058207341" duration="684000" />
     </task>
     <task id="LOCAL-00001" summary="update config">
       <option name="closed" value="true" />
@@ -218,7 +221,15 @@
       <option name="project" value="LOCAL" />
       <updated>1771722983653</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="updated package">
+      <option name="closed" value="true" />
+      <created>1771801698411</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1771801698411</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

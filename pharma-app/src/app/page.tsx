@@ -2,12 +2,60 @@ import HeroSection from "@/components/HeroSection";
 import ProductCard from "@/components/ProductCard";
 import CategoryCard from "@/components/CategoryCard";
 import { getFeaturedProducts, categories } from "@/lib/products";
+import type { Metadata } from "next";
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_BETTER_AUTH_URL ?? "https://pharmagrade.com";
+
+export const metadata: Metadata = {
+  alternates: { canonical: SITE_URL },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Pharma Grade",
+  url: SITE_URL,
+  logo: `${SITE_URL}/images/logo.webp`,
+  description:
+    "Premium pharmaceutical grade supplements and performance compounds. Lab tested, 99% purity guaranteed.",
+  contactPoint: {
+    "@type": "ContactPoint",
+    contactType: "customer support",
+    availableLanguage: "English",
+    email: "support@pharmagrade.com",
+  },
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "Pharma Grade",
+  url: SITE_URL,
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: `${SITE_URL}/products?search={search_term_string}`,
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts();
 
   return (
     <div>
+      {/* JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+      />
       <HeroSection />
 
       <section className="bg-gray-100 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800 py-8">

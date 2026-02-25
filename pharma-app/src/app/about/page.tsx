@@ -1,5 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About Pharma Grade — Our Story, Mission & Values",
+  description:
+    "Learn about Pharma Grade: founded in 2015, we partner with licensed pharmaceutical manufacturers to deliver 99%+ purity supplements to athletes and researchers in 50+ countries.",
+  keywords: [
+    "about pharma grade",
+    "pharmaceutical manufacturer",
+    "lab tested supplements",
+    "who we are",
+  ],
+  openGraph: {
+    title: "About Pharma Grade — Our Story, Mission & Values",
+    description:
+      "Founded in 2015. Pharma-grade purity, worldwide shipping, 24/7 support. Learn what makes us different.",
+  },
+  alternates: { canonical: "/about" },
+};
 
 const values = [
   { icon: "🔬", title: "Lab-Tested Purity", desc: "Every product undergoes third-party testing to guarantee 99%+ purity. We publish certificates of analysis for all products." },

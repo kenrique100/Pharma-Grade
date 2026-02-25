@@ -2,6 +2,20 @@
 
 import { useCart } from "@/lib/cart";
 import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
+
+function CartItemImage({ src, alt }: { src: string; alt: string }) {
+  const [error, setError] = useState(false);
+  if (error || !src) {
+    return <div className="w-full h-full flex items-center justify-center text-3xl">💊</div>;
+  }
+  if (src.startsWith("data:")) {
+    // eslint-disable-next-line @next/next/no-img-element
+    return <img src={src} alt={alt} className="w-full h-full object-contain" onError={() => setError(true)} />;
+  }
+  return <Image src={src} alt={alt} width={64} height={64} className="w-full h-full object-contain" onError={() => setError(true)} />;
+}
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, total, itemCount } = useCart();
@@ -26,7 +40,9 @@ export default function CartPage() {
         <div className="lg:col-span-2 space-y-4">
           {items.map((item) => (
             <div key={item.id} className="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700 flex items-center gap-4 shadow-sm">
-              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-900 rounded-lg flex items-center justify-center text-3xl flex-shrink-0">💊</div>
+              <div className="w-16 h-16 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden flex-shrink-0">
+                <CartItemImage src={item.image} alt={item.name} />
+              </div>
               <div className="flex-1">
                 <h3 className="text-gray-900 dark:text-white font-semibold">{item.name}</h3>
                 <p className="text-red-600 dark:text-red-400 font-bold">${item.price}</p>

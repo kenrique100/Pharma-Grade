@@ -11,7 +11,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
     <Link href={`/categories/${category.slug}`} className="group bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 border border-gray-200 dark:border-gray-700 hover:border-red-500 dark:hover:border-red-600 rounded-xl p-6 transition-all duration-300 hover:shadow-md text-center">
       <div className="relative w-16 h-16 mx-auto mb-3 rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700">
         {category.image ? (
-          <Image src={category.image} alt={category.name} fill className="object-cover" loading="lazy" />
+          <Image src={category.image} alt={category.name} fill sizes="64px" className="object-contain" loading="lazy" />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-3xl">{category.icon}</div>
         )}

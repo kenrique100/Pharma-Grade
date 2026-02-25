@@ -12,6 +12,21 @@ export interface Product {
   reviews: number;
   badge?: "Best Seller" | "New" | "Sale";
   licenceUrl?: string;
+  /** Number of tablets / capsules / vials per pack */
+  unitsPerPack?: number;
+  /** Dose per unit, e.g. "20mg", "100mg/mL", "10IU" */
+  dosePerUnit?: string;
+}
+
+export interface Review {
+  id: string;
+  productId: string;
+  userId: string;
+  userName: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface CartItem {

@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { useTestimonialsStore } from "@/lib/testimonials";
+import { useUser } from "@/hooks/use-user";
 import toast from "react-hot-toast";
 
 export default function TestimonialsPage() {
   const { testimonials, addTestimony } = useTestimonialsStore();
+  const { user } = useUser();
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ name: "", rating: 5, text: "", product: "", avatarUrl: "" });
+  const [form, setForm] = useState({ name: "", rating: 5, text: "", product: "" });
   const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,9 +20,9 @@ export default function TestimonialsPage() {
     }
     setSubmitting(true);
     await new Promise((r) => setTimeout(r, 600));
-    addTestimony({ name: form.name, avatar: form.avatarUrl, rating: form.rating, text: form.text, product: form.product });
+    addTestimony({ name: form.name, avatar: user?.image ?? "", rating: form.rating, text: form.text, product: form.product });
     toast.success("Thank you for your review!");
-    setForm({ name: "", rating: 5, text: "", product: "", avatarUrl: "" });
+    setForm({ name: "", rating: 5, text: "", product: "" });
     setShowForm(false);
     setSubmitting(false);
   };
@@ -54,10 +56,6 @@ export default function TestimonialsPage() {
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1">Your Name *</label>
                 <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required className={inputCls} placeholder="e.g. John D." />
-              </div>
-              <div>
-                <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1">Profile Picture URL (optional)</label>
-                <input type="url" value={form.avatarUrl} onChange={(e) => setForm({ ...form, avatarUrl: e.target.value })} className={inputCls} placeholder="https://example.com/photo.jpg" />
               </div>
               <div>
                 <label className="block text-gray-700 dark:text-gray-300 text-sm font-medium mb-1">Product *</label>

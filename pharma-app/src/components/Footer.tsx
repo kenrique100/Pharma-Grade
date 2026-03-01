@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { WhatsAppIcon, WHATSAPP_URL } from "./WhatsAppIcon";
 
 export default function Footer() {
   return (
@@ -37,6 +38,12 @@ export default function Footer() {
             <h3 className="text-gray-900 dark:text-white font-semibold mb-4">Contact</h3>
             <ul className="space-y-2">
               <li><Link href="/support#chat" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">💬 24/7 Live Chat</Link></li>
+              <li>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors inline-flex items-center gap-1.5">
+                  <WhatsAppIcon className="w-4 h-4 fill-[#25D366]" />
+                  WhatsApp
+                </a>
+              </li>
               <li><a href="mailto:support@pharmagrade.com" className="text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white text-sm transition-colors">support@pharmagrade.com</a></li>
               <li><span className="text-gray-500 dark:text-gray-400 text-sm">Worldwide Shipping</span></li>
               <li><span className="text-gray-500 dark:text-gray-400 text-sm">Crypto Payments Accepted</span></li>

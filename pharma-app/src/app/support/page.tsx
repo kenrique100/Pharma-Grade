@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "@/lib/auth-client";
 import toast from "react-hot-toast";
+import { WhatsAppIcon, WHATSAPP_URL } from "@/components/WhatsAppIcon";
 
 const faqs = [
   { q: "How do I pay with cryptocurrency?", a: "At checkout, select your preferred cryptocurrency (BTC, USDT or USDC). Send the exact amount to our wallet address displayed and paste your transaction hash to confirm your order. Orders are confirmed after 1 network confirmation. BTC and USDT (TRC-20) hashes are 64 hex characters; USDC (ERC-20) hashes start with 0x followed by 64 hex characters." },
@@ -247,6 +248,12 @@ export default function SupportPage() {
                 <h3 className="text-gray-900 dark:text-white font-semibold mb-3">Contact Info</h3>
                 <div className="space-y-2 text-sm text-gray-500 dark:text-gray-400">
                   <p>📧 support@pharmagrade.com</p>
+                  <p>
+                    <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 hover:text-gray-900 dark:hover:text-white transition-colors">
+                      <WhatsAppIcon className="w-4 h-4 fill-[#25D366]" />
+                      WhatsApp Us
+                    </a>
+                  </p>
                   <p>⏰ Response within 24 hours</p>
                   <p>🌍 Available worldwide</p>
                 </div>

@@ -4,6 +4,7 @@ import Providers from "@/components/Providers";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import CookieBanner from "@/components/CookieBanner";
 
 const SITE_URL =
@@ -100,6 +101,7 @@ export default function RootLayout({
           <main className="flex-1">{children}</main>
           <Footer />
           <ChatWidget />
+          <WhatsAppButton />
           <CookieBanner />
         </Providers>
       </body>

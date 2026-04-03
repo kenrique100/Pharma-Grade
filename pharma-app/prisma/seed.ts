@@ -112,6 +112,72 @@ async function main() {
   }
 
   console.log(`✅  Demo user  upserted: ${user.email}   (id: ${user.id})`);
+
+  // ── Seed products ─────────────────────────────────────────────────────────
+  const products = [
+    {
+      name: 'Vitamin Supplement',
+      description: 'Premium pharmaceutical grade vitamin supplement with 99% purity',
+      price: 29.99,
+      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-vitamin-bottle-nog5rqckT7ioVSkN4Htksg.webp',
+      category: 'vitamins',
+      badge: 'Best Seller',
+      stock: 150,
+      featured: true,
+    },
+    {
+      name: 'Capsule Pills',
+      description: 'High-potency pharmaceutical capsules for daily wellness',
+      price: 34.99,
+      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-capsule-pills-fd7Qb953X9K79r74QvuPqi.webp',
+      category: 'capsules',
+      badge: 'Lab Tested',
+      stock: 120,
+      featured: true,
+    },
+    {
+      name: 'Tablet Blister Pack',
+      description: 'Pharmaceutical grade tablets in convenient blister packaging',
+      price: 24.99,
+      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-tablet-blister-8wYgjAySkMBcQzjJkMtFSs.webp',
+      category: 'tablets',
+      badge: null,
+      stock: 200,
+      featured: false,
+    },
+    {
+      name: 'Powder Container',
+      description: 'Pure pharmaceutical powder for precise dosing',
+      price: 39.99,
+      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-powder-container-bpuVNuXhZycUXkFDb26f69.webp',
+      category: 'powders',
+      badge: 'Premium',
+      stock: 80,
+      featured: true,
+    },
+    {
+      name: 'Liquid Medicine',
+      description: 'Pharmaceutical liquid medicine with dropper applicator',
+      price: 44.99,
+      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-liquid-medicine-V2ihHjzvxneMkNpAV7yQNj.webp',
+      category: 'liquids',
+      badge: 'New',
+      stock: 100,
+      featured: true,
+    },
+  ];
+
+  // Clear existing products
+  await prisma.product.deleteMany();
+
+  // Create new products
+  for (const product of products) {
+    await prisma.product.create({
+      data: product,
+    });
+  }
+
+  console.log(`✅  Created ${products.length} pharmaceutical products`);
   console.log("\n⚠️  Remember to change the default passwords before going live!\n");
 }
 

@@ -2,11 +2,14 @@
 
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "react-hot-toast";
+import { CartProvider } from "@/contexts/CartContext";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
-      {children}
+      <CartProvider>
+        {children}
+      </CartProvider>
       <Toaster
         position="top-right"
         toastOptions={{

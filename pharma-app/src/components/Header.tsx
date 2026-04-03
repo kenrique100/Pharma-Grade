@@ -6,12 +6,14 @@ import { useState, useEffect } from "react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useTheme } from "next-themes";
 import CartButton from "./CartButton";
+import CartSidebar from "./CartSidebar";
 import GoogleTranslate from "./GoogleTranslate";
 
 export default function Header() {
   const { data: session } = useSession();
   const [menuOpen, setMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -58,7 +60,7 @@ export default function Header() {
 
             <GoogleTranslate />
 
-            <CartButton />
+            <CartButton onClick={() => setCartOpen(true)} />
 
             {session ? (
               <div className="relative">
@@ -118,6 +120,8 @@ export default function Header() {
           </div>
         )}
       </div>
+
+      <CartSidebar isOpen={cartOpen} onClose={() => setCartOpen(false)} />
     </header>
   );
 }

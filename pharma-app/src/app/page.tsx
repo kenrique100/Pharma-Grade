@@ -1,4 +1,8 @@
-import ProductCarousel3D from "@/components/ProductCarousel3D";
+'use client';
+
+import React from 'react';
+import ProductCarousel3DEnhanced from "@/components/ProductCarousel3DEnhanced";
+import ProductFilter, { type FilterState } from "@/components/ProductFilter";
 import ProductCard from "@/components/ProductCard";
 import CategoryCard from "@/components/CategoryCard";
 import { getFeaturedProducts, categories } from "@/lib/products";
@@ -44,49 +48,14 @@ const websiteSchema = {
 
 export default function HomePage() {
   const featuredProducts = getFeaturedProducts();
+  const [filters, setFilters] = React.useState<FilterState>({
+    search: '',
+    category: 'all',
+    minPrice: 0,
+    maxPrice: 100,
+  });
 
-  // Product carousel data
-  const carouselProducts = [
-    {
-      id: '1',
-      name: 'Vitamin Supplement',
-      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-vitamin-bottle-nog5rqckT7ioVSkN4Htksg.webp',
-      description: 'Premium pharmaceutical grade vitamin supplement with 99% purity',
-      price: '$29.99',
-      badge: 'Best Seller',
-    },
-    {
-      id: '2',
-      name: 'Capsule Pills',
-      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-capsule-pills-fd7Qb953X9K79r74QvuPqi.webp',
-      description: 'High-potency pharmaceutical capsules for daily wellness',
-      price: '$34.99',
-      badge: 'Lab Tested',
-    },
-    {
-      id: '3',
-      name: 'Tablet Blister Pack',
-      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-tablet-blister-8wYgjAySkMBcQzjJkMtFSs.webp',
-      description: 'Pharmaceutical grade tablets in convenient blister packaging',
-      price: '$24.99',
-    },
-    {
-      id: '4',
-      name: 'Powder Container',
-      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-powder-container-bpuVNuXhZycUXkFDb26f69.webp',
-      description: 'Pure pharmaceutical powder for precise dosing',
-      price: '$39.99',
-      badge: 'Premium',
-    },
-    {
-      id: '5',
-      name: 'Liquid Medicine',
-      image: 'https://d2xsxph8kpxj0f.cloudfront.net/310519663441035103/W4T3ujXrmJtV596ssnAB6c/pharma-liquid-medicine-V2ihHjzvxneMkNpAV7yQNj.webp',
-      description: 'Pharmaceutical liquid medicine with dropper applicator',
-      price: '$44.99',
-      badge: 'New',
-    },
-  ];
+  const productCategories = ['vitamins', 'capsules', 'tablets', 'powders', 'liquids'];
 
   return (
     <div>
@@ -100,7 +69,17 @@ export default function HomePage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
       />
       {/* 3D Product Carousel Hero Section */}
-      <ProductCarousel3D products={carouselProducts} autoPlay={true} autoPlayInterval={5000} />
+      <ProductCarousel3DEnhanced autoPlay={true} autoPlayInterval={5000} />
+
+      {/* Product Filter Section */}
+      <section className="bg-gray-50 dark:bg-gray-800 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <ProductFilter
+            categories={productCategories}
+            onFilterChange={setFilters}
+          />
+        </div>
+      </section>
 
       <section className="bg-gray-100 dark:bg-gray-900 border-y border-gray-200 dark:border-gray-800 py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
